@@ -12,3 +12,8 @@ git clone https://github.com/your_username/your_project.git
 ```bash
 git pull
 ```
+
+前端项目是 front_end, 执行前在命令行执行以下命令下载各个模块
+```bash
+npm install
+```
