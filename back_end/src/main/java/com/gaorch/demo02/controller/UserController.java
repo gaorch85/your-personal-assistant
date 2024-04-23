@@ -107,7 +107,7 @@ public class UserController
         }
     }
 
-    @PostMapping("/user/update")
+    @PutMapping("/user/update")
     public Result update(@RequestBody User user)
     {
         String token = request.getHeader("X-token");

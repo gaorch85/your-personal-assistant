@@ -7,8 +7,6 @@ import router from './router'
 
 import './mock'
 
-
-axios.defaults.baseURL = "http://localhost:8090"
 Vue.prototype.$http = axios
 
 Vue.config.productionTip = false

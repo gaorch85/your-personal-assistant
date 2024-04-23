@@ -17,7 +17,7 @@ export function api_getInfo() {
 export function api_update(data) {
     return request({
       url: `/user/update`,
-      method: 'post',
+      method: 'put',
       data
     })
 }
