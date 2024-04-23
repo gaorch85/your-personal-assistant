@@ -21,6 +21,10 @@
               v-model="form.password" 
               show-password></el-input>
             </el-form-item>
+            <div style="display: flex; justify-content: flex-start;">
+              <el-link type="primary" @click="ResetPassword()">忘记密码?</el-link>
+              <br>
+            </div>
             <el-form-item style="text-align: center;">
               <el-button type="primary"  @click="login">登录</el-button>
             </el-form-item>
@@ -48,6 +52,8 @@
           </el-form>
         </el-tab-pane>
       </el-tabs>
+
+
     </div>
   </div>
 </template>
@@ -167,6 +173,13 @@ export default {
     {
       this.form.username = '';
       this.form.password = '';
+    },
+
+    ResetPassword()
+    {
+      //TODO
+
+      
     }
 
   }

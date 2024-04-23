@@ -5,6 +5,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
 import router from './router'
 
+import './mock'
+
+
 axios.defaults.baseURL = "http://localhost:8090"
 Vue.prototype.$http = axios
 
