@@ -14,7 +14,8 @@ git pull
 ### 运行前端项目
 前端项目是front_end文件夹
 
-开发、执行该项目依赖于node.js ，在官网安装node.js即可
+开发、执行该项目依赖于node.js ，在官网安装node.js即可  
+
 验证node.js安装成功，在命令行执行：
 ```bash
 npm --version
