@@ -201,6 +201,7 @@
                     type: 'success',
                     message: '注销成功!'
                 });
+
             }).catch(() => {
                 this.$message({
                     type: 'info',
@@ -214,8 +215,8 @@
             api_deactivateAccount()
             .then((response)=>
             {
-
-                this.$router.push('/login')
+                if(this.$router.currentRoute.name != 'login')
+                    this.$router.push('/login')
             })
         },
 

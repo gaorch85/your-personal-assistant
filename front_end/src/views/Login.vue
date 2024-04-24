@@ -177,9 +177,10 @@ export default {
 
     ResetPassword()
     {
-      //TODO
-
-      
+      this.$message({
+        message: '请您再仔细想一想！！！',
+        type: 'success'
+      });
     }
 
   }

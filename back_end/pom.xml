@@ -76,6 +76,14 @@
             <version>2.3.1</version>
         </dependency>
 
+
+        <!-- mail 依赖 -->
+        <!-- 用于发邮件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

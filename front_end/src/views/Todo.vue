@@ -1,8 +1,23 @@
 <template>
     <div>
+
+      <el-select v-model="isOver" placeholder="是否完成"  style="margin-right: 20px;">
+        <el-option label="全部" value="all"></el-option>
+        <el-option label="未完成" value="0"></el-option>
+        <el-option label="已完成" value="1"></el-option>
+      </el-select>
+      
+      <el-select v-model="isOverdue" placeholder="是否逾期">
+        <el-option label="全部" value="all"></el-option>
+        <el-option label="未逾期" value="0"></el-option>
+        <el-option label="已逾期" value="1"></el-option>
+      </el-select>
+
       <el-table
-        :data="tableData"
-        style="width: 100%">
+        :data="filteredTableData"
+        height="600"
+        style="width: 100%"
+        :default-sort = "{prop: 'deadline', order: 'descending'}">
         <!-- 姓名列  -->
         <el-table-column
           prop="topic"
@@ -19,15 +34,25 @@
         <el-table-column
           prop="deadline"
           label="截止日期"
+          sortable
           width="250">
         </el-table-column>
-        <!-- 地址列  -->
+        <!-- 完成情况  -->
         <el-table-column
           label="状态"
           width="100">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.status" size="small" type="success">已完成</el-tag>
             <el-tag v-else size="small" type="danger">未完成</el-tag>
+          </template>
+        </el-table-column>
+        <!-- 完成情况  -->
+        <el-table-column
+          label="是否逾期"
+          width="100">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.isOverdue" size="small" type="success">未逾期</el-tag>
+            <el-tag v-else size="small" type="danger">已逾期</el-tag>
           </template>
         </el-table-column>
         <!-- 按钮列  -->
@@ -103,6 +128,8 @@
         return {
           dialogVisible: false,
           tableData: [],
+          isOver: 'all',
+          isOverdue: 'all',
           form: {
             id: 0,
             topic: '',
@@ -112,14 +139,57 @@
           }
         }
       },
+      computed: {
+        filteredTableData()
+        {
+            return this.filteredOver(this.filteredOverdue(this.tableData));
+        },
+      },
       methods: {
+        filteredOver(data) {
+          if (this.isOver === 'all') 
+          {
+            return data;
+          } 
+          else if(this.isOver === '0') 
+          {
+            return data.filter(row => row.status === false);
+          }
+          else
+          {
+            return data.filter(row => row.status === true);
+          }
+        },
+        filteredOverdue(data) {
+          if (this.isOverdue === 'all') 
+          {
+            return data;
+          } 
+          else if(this.isOverdue === '0') 
+          {
+            return data.filter(row => row.isOverdue === true);
+          }
+          else
+          {
+            return data.filter(row => row.isOverdue === false);
+          }
+        },
         getAll() 
         {
           console.log("查询所有数据")
           api_getAll()
             .then((response)=>
             {
-              this.tableData = response.data.data.items
+              this.tableData = response.data.data.items;
+              this.tableData.forEach(task => {
+                const currentDate = new Date();
+                const deadlineDate = new Date(task.deadline);
+                if (currentDate < deadlineDate) {
+                  this.$set(task, 'isOverdue', true);
+                } else {
+                  this.$set(task, 'isOverdue', false);
+                }
+             });
             })
         },
 
@@ -136,7 +206,14 @@
             api_insert(this.form)
               .then((response)=>
               {
-                this.form = {};
+                this.form = Object.assign({}, this.form, 
+                {
+                  id: 0,
+                  topic: '',
+                  details: '',
+                  deadline: '',
+                  status: 0,
+                })
                 this.dialogVisible = false;
                 this.getAll();
             })
@@ -144,7 +221,14 @@
 
         cancel()
         {
-          this.form = {};
+          this.form = Object.assign({}, this.form, 
+          {
+            id: 0,
+            topic: '',
+            details: '',
+            deadline: '',
+            status: 0,
+          })
           this.dialogVisible = false;
         },
 
@@ -215,13 +299,20 @@
           {
             topic: 'Test',
             details: 'this is the test information',
-            deadline: '2000-1-1',
+            deadline: '2000-01-01 00:00:00',
           })
 
           api_insert(this.form)
               .then((response)=>
               {
-                this.form = {};
+                this.form = Object.assign({}, this.form, 
+                {
+                  id: 0,
+                  topic: '',
+                  details: '',
+                  deadline: '',
+                  status: 0,
+                })
                 console.log(response.data);
                 this.dialogVisible = false;
                 this.getAll();

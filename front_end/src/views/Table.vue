@@ -171,7 +171,14 @@
             api_insert(this.form)
               .then((response)=>
               {
-                this.form = {};
+                this.form = Object.assign({}, this.form, 
+                {
+                  id: 0,
+                  name: '',
+                  gender: '',
+                  birthday: '',
+                  address: ''
+                })
                 console.log(response.data)
                 this.dialogVisible = false
                 this.getAllEmployees()
@@ -182,7 +189,14 @@
             api_update(this.form)
               .then((response)=>
                 {
-                  this.form = {};
+                  this.form = Object.assign({}, this.form, 
+                  {
+                    id: 0,
+                    name: '',
+                    gender: '',
+                    birthday: '',
+                    address: ''
+                  })
                   console.log(response.data)
                   this.dialogVisible = false
                   this.getAllEmployees()
@@ -192,7 +206,14 @@
 
         cancel()
         {
-          this.form = {};
+          this.form = Object.assign({}, this.form, 
+          {
+            id: 0,
+            name: '',
+            gender: '',
+            birthday: '',
+            address: ''
+          })
           this.dialogVisible = false
         },
 
@@ -222,13 +243,27 @@
           api_insert(this.form)
               .then((response)=>
               {
-                this.form = {};
+                this.form = Object.assign({}, this.form, 
+                {
+                  id: 0,
+                  name: '',
+                  gender: '',
+                  birthday: '',
+                  address: ''
+                })
                 console.log(response.data)
                 this.dialogVisible = false
                 this.getAllEmployees()
               })
 
-              this.form = {};
+              this.form = Object.assign({}, this.form, 
+              {
+                id: 0,
+                name: '',
+                gender: '',
+                birthday: '',
+                address: ''
+              })
         }
 
         

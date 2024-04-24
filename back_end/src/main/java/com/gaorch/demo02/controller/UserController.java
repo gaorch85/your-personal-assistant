@@ -1,8 +1,8 @@
 package com.gaorch.demo02.controller;
 
-import com.gaorch.demo02.entity.Employee;
 import com.gaorch.demo02.entity.User;
 import com.gaorch.demo02.mapper.UserMapper;
+//import com.gaorch.demo02.utils.EmailService;
 import com.gaorch.demo02.utils.JwtUtils;
 import com.gaorch.demo02.utils.PasswordUtils;
 import com.gaorch.demo02.utils.Result;
@@ -144,4 +144,35 @@ public class UserController
             return Result.unAuthorized();
         }
     }
+
+    //邮箱发验证码服务，暂时有不知名bug，未实现
+//    @Autowired
+//    private EmailService emailService;
+//    @GetMapping("/getCode")
+//    public Result getCode(String token)
+//    {
+//        //String token = request.getHeader("X-token");
+//        System.out.println("here1");
+//        System.out.println(token);
+//        try {
+//            String username = JwtUtils.getClaimsByToken(token).getSubject();
+//            User user = userMapper.selectByUsername(username);
+//            System.out.println("here2");
+//            if(user.getEmail()!=null)
+//            {
+//                System.out.println("here3");
+//                emailService.sendVerificationCode(user.getEmail(), "123456");
+//                System.out.println("here4");
+//                return Result.ok();
+//            }
+//            else
+//                return Result.error();
+//        }
+//        catch (Exception e)
+//        {
+//            System.out.println("here5");
+//            System.out.println(e.getMessage());
+//            return Result.unAuthorized();
+//        }
+//    }
 }

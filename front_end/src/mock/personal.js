@@ -25,7 +25,7 @@ Mock.mock(base_url + '/user', 'delete', {
         message: 'success',
 });
 
-Mock.mock(base_url + '/user/update', 'post',(req)=> {
+Mock.mock(base_url + '/user/update', 'put',(req)=> {
     return {
         success: true,
         code: 20000,
@@ -33,7 +33,7 @@ Mock.mock(base_url + '/user/update', 'post',(req)=> {
     }
 });
 
-Mock.mock(base_url + '/changePassword', 'post',(req)=> {
+Mock.mock(base_url + '/changePassword', 'put',(req)=> {
     return {
         success: true,
         code: 20000,
