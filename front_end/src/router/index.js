@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from "@/views/Login.vue"
-import Table from "@/views/Table.vue"
-import Todo from "@/views/Todo.vue"
+import Todo from "@/views/Todo/Todo.vue"
+import TodoList from "@/views/Todo/TodoList.vue"
+import ManageTopic from "@/views/Todo/ManageTopic.vue"
 import Home from "@/views/Home.vue"
 import Personal from "@/views/Personal.vue"
 import Error_403 from "@/views/error/403.vue"
@@ -20,7 +21,7 @@ const routes = [
 
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       component: Login
     },
 
@@ -40,36 +41,70 @@ const routes = [
       component: Layout,
       children: [
         {
+          path: '/403',
+          name: '403',
+          component: Error_403,
+        }
+     ]
+    },
+
+    {
+      path: '/',
+      component: Layout,
+      show: true,
+      children: [
+        {
           path: '/home',
           name: 'Home',
-          component: Home
-        },
-        {
-          path: '/table',
-          name: 'Table',
-          component: Table
-        },
+          component: Home,
+          meta: { title: '首页', icon: 'el-icon-s-home' }
+        }
+     ]
+    },
+
+    {
+      path: '/',
+      component: Layout,
+      show: true,
+      children: [
         {
           path: '/todo',
           name: 'Todo',
-          component: Todo
-        },
+          component: Todo,
+          redirect: '/todo/list',
+          meta: { title: '待办事项', icon: 'el-icon-s-order' },
+          children: [
+            {
+              path: 'list',
+              name: 'Todo-List',
+              component: TodoList,
+              meta: { title: '待办管理', icon: 'el-icon-s-order' }
+            },
+            {
+              path: 'manage_topic',
+              name: 'Todo-ManageTopic',
+              component: ManageTopic,
+              meta: { title: '添加主题', icon: 'el-icon-s-order' }
+            }
+          ]
+        }
+     ]
+    },
 
-        {
-          path: '/403',
-          name: '403',
-          component: Error_403
-        },
+    {
+      path: '/',
+      component: Layout,
+      show: true,
+      children: [
         {
           path: '/personal',
           name: 'Personal',
-          component: Personal
+          component: Personal,
+          meta: { title: '个人中心', icon: 'el-icon-s-custom' }
         }
       ]
-
     }
 
-    
   ]
   
   const router = new Router({

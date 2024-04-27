@@ -7,15 +7,17 @@
         <el-option label="已完成" value="1"></el-option>
       </el-select>
       
-      <el-select v-model="isOverdue" placeholder="是否逾期">
+      <el-select v-model="isOverdue" placeholder="是否逾期" style="margin-right: 450px;">
         <el-option label="全部" value="all"></el-option>
         <el-option label="未逾期" value="0"></el-option>
         <el-option label="已逾期" value="1"></el-option>
       </el-select>
 
+      <el-button type="primary" icon="el-icon-refresh-right" circle @click="refresh()"></el-button>
+
       <el-table
         :data="filteredTableData"
-        height="600"
+        height="550"
         style="width: 100%"
         :default-sort = "{prop: 'deadline', order: 'descending'}">
         <!-- 姓名列  -->
@@ -68,8 +70,8 @@
       <br>
       <el-button type="primary" icon="el-icon-plus" circle @click="insertEmployee()"></el-button>
 
-      <br>
-      <el-button type="primary" icon="el-icon-plus" circle @click="quick_insertEmployee()"></el-button>
+      <!-- <br>
+      <el-button type="primary" icon="el-icon-plus" circle @click="quick_insertEmployee()"></el-button> -->
 
       
   
@@ -174,6 +176,15 @@
             return data.filter(row => row.isOverdue === false);
           }
         },
+        refresh()
+        {
+          this.getAll();
+          this.$message({
+            message: '刷新成功!',
+            type: 'success'
+          });
+
+        },
         getAll() 
         {
           console.log("查询所有数据")
@@ -216,6 +227,10 @@
                 })
                 this.dialogVisible = false;
                 this.getAll();
+                this.$message({
+                  message: '添加成功!',
+                  type: 'success'
+                });
             })
         },
 
@@ -230,6 +245,9 @@
             status: 0,
           })
           this.dialogVisible = false;
+          this.$message({
+            message: '取消添加'
+          });
         },
 
         update(row)
@@ -292,32 +310,32 @@
             })
         },
 
-        quick_insertEmployee()
-        {
+        // quick_insertEmployee()
+        // {
 
-          this.form = Object.assign({}, this.form, 
-          {
-            topic: 'Test',
-            details: 'this is the test information',
-            deadline: '2000-01-01 00:00:00',
-          })
+        //   this.form = Object.assign({}, this.form, 
+        //   {
+        //     topic: 'Test',
+        //     details: 'this is the test information',
+        //     deadline: '2000-01-01 00:00:00',
+        //   })
 
-          api_insert(this.form)
-              .then((response)=>
-              {
-                this.form = Object.assign({}, this.form, 
-                {
-                  id: 0,
-                  topic: '',
-                  details: '',
-                  deadline: '',
-                  status: 0,
-                })
-                console.log(response.data);
-                this.dialogVisible = false;
-                this.getAll();
-            })
-        }
+        //   api_insert(this.form)
+        //       .then((response)=>
+        //       {
+        //         this.form = Object.assign({}, this.form, 
+        //         {
+        //           id: 0,
+        //           topic: '',
+        //           details: '',
+        //           deadline: '',
+        //           status: 0,
+        //         })
+        //         console.log(response.data);
+        //         this.dialogVisible = false;
+        //         this.getAll();
+        //     })
+        // }
 
         
       }

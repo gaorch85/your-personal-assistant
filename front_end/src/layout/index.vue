@@ -4,11 +4,16 @@
             <!-- 导航栏 -->
             <el-header style="height: 10vh;">
                 <el-row>
-                    <el-col :span="6"><div class="grid-content bg-purple">
+                    <el-col :span="3"><div class="grid-content bg-purple">
                         <h1>这是导航栏</h1>
                     </div></el-col>
 
-                    <el-col :span="2" :offset="16"><div class="grid-content bg-purple">
+                    <el-col :span="6"><div class="grid-content bg-purple">
+                        <br>
+                        <clock></clock>
+                    </div></el-col>
+
+                    <el-col :span="2" :offset="13"><div class="grid-content bg-purple">
                         <br>
                         <el-button type="danger" round @click="logout()">logout</el-button>
                     </div></el-col>
@@ -25,55 +30,7 @@
                 <el-aside width="200px">
                     <el-row class="tac">
                         <el-col>
-                            <el-menu
-                                default-active="Home"
-                                class="el-menu-vertical-demo"
-                                @select="handleSelect">
-
-                                <el-menu-item index="Home">
-                                    <i class="el-icon-menu"></i>    
-                                    <span>首页</span>
-                                </el-menu-item>
-
-                                <el-menu-item index="Table">
-                                    <i class="el-icon-menu"></i>    
-                                    <span>表格</span>
-                                </el-menu-item>
-
-                                <el-menu-item index="Todo">
-                                    <i class="el-icon-menu"></i>    
-                                    <span>待办事项</span>
-                                </el-menu-item>
-
-                    
-
-
-                                <el-menu-item index="403">
-                                    <i class="el-icon-menu"></i>    
-                                    <span>403</span>
-                                </el-menu-item>
-
-                                <el-menu-item index="Personal">
-                                    <i class="el-icon-menu"></i>    
-                                    <span>个人中心</span>
-                                </el-menu-item>
-
-                                <el-menu-item index="example" disabled>
-                                    <i class="el-icon-menu"></i>    
-                                    <span>示例</span>
-                                </el-menu-item>
-
-                                <el-menu-item index="example" disabled>
-                                    <i class="el-icon-menu"></i>    
-                                    <span>示例</span>
-                                </el-menu-item>
-
-                                <el-menu-item index="example" disabled>
-                                    <i class="el-icon-menu"></i>    
-                                    <span>示例</span>
-                                </el-menu-item>
-
-                            </el-menu>
+                            <Sidebar :routes="routes"></Sidebar>
                         </el-col>
                     </el-row>
                 </el-aside>
@@ -92,21 +49,58 @@
   
   <script>
     import { removeToken } from '@/utils/auth';
+    import Sidebar from './Sidebar.vue';
+    import Clock from './Clock.vue';
     export default {
-        methods: {
-        handleSelect(index)
-        {
-            console.log(this.$route.name);
-            console.log(index);
-            if(this.$route.name != index)
-                this.$router.push({ name: index });
+        components: {
+            Sidebar,
+            Clock
         },
-
-        logout()
-        {
-            removeToken();
-            this.$router.push('/login')
-        }
+        computed: {
+            routes() {
+                const sidebarRoutes = [];
+                this.$router.options.routes.forEach(route => {
+                    if(route.show)
+                    {
+                        const curObject = route.children[0];
+                        if(curObject.hasOwnProperty('children'))
+                        {
+                            const curChildren = [];
+                            curObject.children.forEach(child => {
+                                curChildren.push(
+                                    {
+                                        name: child.name,
+                                        meta: child.meta
+                                    }
+                                )
+                            });
+                            sidebarRoutes.push(
+                            {
+                                name: curObject.name,
+                                meta: curObject.meta,
+                                children: curChildren
+                            })
+                        }
+                        else
+                        {
+                            sidebarRoutes.push(
+                            {
+                                name: curObject.name,
+                                meta: curObject.meta
+                            })
+                        }
+                    }
+                });
+                return sidebarRoutes;
+            }
+        },
+        methods: {
+    
+            logout()
+            {
+                removeToken();
+                this.$router.push('/login')
+            }
         }
     };
   </script>

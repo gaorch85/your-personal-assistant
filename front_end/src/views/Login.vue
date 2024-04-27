@@ -71,6 +71,7 @@ export default {
     return {
       activateName:'login',
       form: {
+        id: 0,
         username: '',
         password: ''
       },
@@ -111,6 +112,7 @@ export default {
               });
               setToken(response.data.data.token)
               this.$router.push('/home')
+
               this.form.username = '';
               this.form.password = '';
             }

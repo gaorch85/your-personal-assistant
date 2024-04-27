@@ -10,6 +10,7 @@ import { getToken } from '@/utils/auth'
 // create an axios instance
 const service = axios.create({
 
+  // baseURL 根据环境变量改变，使得Mock只拦截Mock环境变量
   baseURL: process.env.VUE_APP_BASE_API, 
   timeout: 5000 
 })
