@@ -8,6 +8,9 @@ import Home from "@/views/Home.vue"
 import Personal from "@/views/Personal.vue"
 import Error_403 from "@/views/error/403.vue"
 import Error_404 from "@/views/error/404.vue"
+import Blog from "@/views/Blog/Blog.vue"
+import BlogList from "@/views/Blog/BlogList.vue"
+import CreateBlog from "@/views/Blog/CreateBlog.vue"
 import Layout from "@/layout"
 
 Vue.use(Router)
@@ -86,6 +89,37 @@ const routes = [
               component: ManageTopic,
               meta: { title: '添加主题', icon: 'el-icon-s-order' }
             }
+          ]
+        }
+     ]
+    },
+
+    {
+      path: '/',
+      component: Layout,
+      show: true,
+      children: [
+        {
+          path: '/blog',
+          name: 'Blog',
+          component: Blog,
+          redirect: '/blog/list',
+          meta: { title: '博客', icon: 'el-icon-s-order' },
+          children: [
+            {
+              path: 'list',
+              name: 'Blog-List',
+              component: BlogList,
+              meta: { title: '博客列表', icon: 'el-icon-s-order' }
+            },
+            
+            {
+              path: 'create',
+              name: 'Blog-Create',
+              component: CreateBlog,
+              meta: { title: '创建博客', icon: 'el-icon-s-order' }
+            }
+            
           ]
         }
      ]
