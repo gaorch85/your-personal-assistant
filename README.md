@@ -1,3 +1,4 @@
+### 有问题，先阅读 commit message， 再看 README 有没有什么变化!!!  
 
 ### 项目整体的clone和pull
 如果你想要获取项目的全部代码并将其复制到你的本地环境，可以使用以下命令克隆项目：
@@ -66,17 +67,22 @@ mvn --version
 
 使用IDEA打开/back_end项目，修改数据库信息，即可执行了，修改教程如下：  
 
-找到\back_end\src\main\resources\application.properties文件，修改以下三项：
+创建\back_end\src\main\resources\application.properties文件，配置相关信息即可（springboot有该文件，但该文件内有敏感信息，本人已将该文件放在.gitignore中）
 ```bash
-spring.datasource.url = jdbc:mysql://localhost:3306/mybatis_demo?useSSL=true
-spring.datasource.username = root
-spring.datasource.password= 123456
+spring.application.name = demo02
+spring.devtools.restart.enabled = true
+spring.devtools.restart.additional-paths = src/main/java
+spring.datasource.exitype = com.alibaba.druid.pool.DruidDataSource
+spring.datasource.driver-class-name = com.mysql.cj.jdbc.Driver
+spring.datasource.url = jdbc:mysql://[host]:[port]/[database]?useSSL=true
+spring.datasource.username = [username]
+spring.datasource.password = [password]
+mybatis-plus.configuration.log-impl = org.apache.ibatis.logging.stdout.StdOutImpl
+server.port = 8090
 ```
-将上面的信息，"mybatis_demo"改为你自己mysql的数据库名称  
+将上面的信息中，所有方括号内容，改为自己的即可，例如[host]改为localhost  
 
-"root"改为数据库用户名（一般也是root）
 
-"123456"改为你自己的数据库密码  
 
 现在，后端连接到数据库也没有问题了  
 
