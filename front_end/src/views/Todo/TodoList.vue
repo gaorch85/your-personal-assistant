@@ -19,7 +19,7 @@
         :data="filteredTableData"
         height="550"
         style="width: 100%"
-        :default-sort = "{prop: 'deadline', order: 'descending'}">
+        :default-sort = "{prop: '', order: ''}">
         <!-- 姓名列  -->
         <el-table-column
           prop="topic"
@@ -309,34 +309,6 @@
                 }
             })
         },
-
-        // quick_insertEmployee()
-        // {
-
-        //   this.form = Object.assign({}, this.form, 
-        //   {
-        //     topic: 'Test',
-        //     details: 'this is the test information',
-        //     deadline: '2000-01-01 00:00:00',
-        //   })
-
-        //   api_insert(this.form)
-        //       .then((response)=>
-        //       {
-        //         this.form = Object.assign({}, this.form, 
-        //         {
-        //           id: 0,
-        //           topic: '',
-        //           details: '',
-        //           deadline: '',
-        //           status: 0,
-        //         })
-        //         console.log(response.data);
-        //         this.dialogVisible = false;
-        //         this.getAll();
-        //     })
-        // }
-
         
       }
     }

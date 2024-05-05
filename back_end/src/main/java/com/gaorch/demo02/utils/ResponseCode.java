@@ -1,6 +1,6 @@
 package com.gaorch.demo02.utils;
 
-public interface ResultCode {
+public interface ResponseCode {
 
     public static Integer SUCCESS = 20000; //成功
 

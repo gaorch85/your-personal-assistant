@@ -84,6 +84,14 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
+        <!-- lombok依赖 -->
+        <!-- 提供@Data注解 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 
