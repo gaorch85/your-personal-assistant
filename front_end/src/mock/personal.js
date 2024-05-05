@@ -13,7 +13,7 @@ Mock.mock(base_url + '/getInfo', 'get', {
                 'username': 'mock',
                 'phone_name': '110',
                 'email': '110.eamail',
-                'isVip': false
+                'vip': false
               }
             }
 });

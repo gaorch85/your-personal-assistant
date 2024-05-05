@@ -33,7 +33,7 @@
                     <i class="el-icon-tickets"></i>
                     会员
                 </template>
-                <el-tag v-if="info.isVip" size="small" type="danger">VIP</el-tag>
+                <el-tag v-if="info.vip" size="small" type="danger">VIP</el-tag>
                 <el-tag v-else size="small" type="info">VIP</el-tag>
             </el-descriptions-item>
 
@@ -222,7 +222,7 @@
 
         changeVip()
         {
-            this.info.isVip = !this.info.isVip; 
+            this.info.vip = !this.info.vip; 
             api_update(this.info)
             .then((response)=>
             {
