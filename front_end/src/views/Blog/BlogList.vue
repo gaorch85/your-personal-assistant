@@ -5,27 +5,24 @@
         <el-tab-pane label="最新" name="latest"></el-tab-pane>
         <el-tab-pane label="我的博客" name="myBlog"></el-tab-pane>
         <el-tab-pane label="我的点赞" name="myLike"></el-tab-pane>
-        <el-tab-pane label="我的收藏" name="myCollect"></el-tab-pane>
+        <el-tab-pane label="我的收藏" name="myFavorite"></el-tab-pane>
       </el-tabs>
       
-      <ul
-        class="list"
-        v-infinite-scroll="load"
-        infinite-scroll-disabled="disabled">
-        <el-card shadow="hover" v-for="post in posts" :key="post.id">
-            <div class="blog-post">
-            <h2 class="post-title">{{ post.title }}</h2>
-            <vue-markdown :source="test" />
-            <div class="post-footer">
-              <span class="post-author">{{ post.username }}</span>
-                <span class="post-date">{{ post.time }}</span>
-                <el-button type="text" @click="viewPost(post.id)">阅读更多</el-button>
-            </div>
-            </div>
-        </el-card>
-      </ul>
-      <p v-if="loading">加载中...</p>
-      <p v-if="noMore">没有更多了</p>
+      <el-card shadow="hover" v-for="post in posts" :key="post.id">
+        <div class="blog-post">
+          <h2 class="post-title">{{ post.title }}</h2>
+          <vue-markdown :source="test" />
+          <div class="post-footer">
+            <span class="post-author">{{ post.username }}</span>
+              <span class="post-date">{{ post.time }}</span>
+              <el-button type="text" @click="viewPost(post.id)">阅读更多</el-button>
+          </div>
+
+
+
+        </div>
+      </el-card>
+
         
     </div>
   </template>
@@ -39,7 +36,7 @@
     },
     mounted()
     {
-      this.getAll();
+      this.getAll(this.activeName);
     },
 
     data() {
@@ -47,40 +44,25 @@
         posts: [],
         test: 'recommend',
         activeName: 'recommend',
-        loading: false,
-        isOver: false,
-        loading: false,
-        count: 1,
       };
     },
 
     computed: {
-      disabled()
-      {
-        return this.isOver;
-      },
-      noMore()
-      {
-        return this.count > 100;
-      }
+
+
     },
     methods: {
       handleClick(tab) 
       {
         this.activeName = tab.name;
+        this.getAll(this.activeName)
         this.test = tab.name;
-        console.log(this.test);
+        //console.log(this.test);
       },
 
-      load()
+      getAll(sortIndex)
       {
-        this.count = this.count+1;
-        console.log('正在加载');
-      },
-
-      getAll()
-      {
-        api_getAll()
+        api_getAll(sortIndex)
         .then((response)=>
         {
           this.posts=response.data.data.items;    
@@ -88,15 +70,17 @@
         })
       },
 
-      viewPost(postId) {
+      viewPost(id) {
         // 根据postId执行跳转或其他操作
-        console.log('查看博客文章', postId);
+        //console.log('查看博客文章', id);
+        this.$router.push({ name: 'BlogPost', params: { id } });
+    
       }
     }
   };
   </script>
   
-  <style scoped>
+<style scoped>
   .blog-post {
     margin-bottom: 20px;
   }
@@ -125,4 +109,5 @@
   .post-author {
     color: #999;
   }
-  </style>
+
+</style>

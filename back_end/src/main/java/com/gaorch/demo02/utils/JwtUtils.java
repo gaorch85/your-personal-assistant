@@ -5,6 +5,7 @@ import com.gaorch.demo02.mapper.UserMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,7 @@ public class JwtUtils {
 
     // 32位密钥
     private static String secret = "ijdowudiehhudisodkpbdmckdisurnco";
+
 
     @Autowired
     public JwtUtils(UserMapper userMapper) {
@@ -61,10 +63,6 @@ public class JwtUtils {
             return false;
         }
     }
-
-
-
-
 
 
 }

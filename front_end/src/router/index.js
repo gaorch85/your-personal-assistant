@@ -9,6 +9,7 @@ import Personal from "@/views/Personal.vue"
 import Error_403 from "@/views/error/403.vue"
 import Error_404 from "@/views/error/404.vue"
 import Blog from "@/views/Blog/Blog.vue"
+import BlogPost from '@/views/Blog/BlogPost.vue'
 import BlogList from "@/views/Blog/BlogList.vue"
 import CreateBlog from "@/views/Blog/CreateBlog.vue"
 import Layout from "@/layout"
@@ -49,6 +50,18 @@ const routes = [
           component: Error_403,
         }
      ]
+    },
+
+    {
+      path: '/',
+      component: Layout,
+      children: [
+        {
+          path: 'blog/:id',  // 使用占位符 :id
+          name: 'BlogPost',
+          component: BlogPost,  // 确保 BlogPost 是已经定义的组件
+        }
+      ]
     },
 
     {

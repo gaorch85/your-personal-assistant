@@ -5,13 +5,15 @@
             <el-header style="height: 10vh;">
                 <el-row>
                     <el-col :span="3"><div class="grid-content bg-purple">
-                        <h1>这是导航栏</h1>
+                        <h2>你的个人助手</h2>
                     </div></el-col>
 
                     <el-col :span="6"><div class="grid-content bg-purple">
                         <br>
                         <clock></clock>
                     </div></el-col>
+
+                    
 
                     <el-col :span="2" :offset="13"><div class="grid-content bg-purple">
                         <br>
@@ -37,7 +39,7 @@
                 
                 <!-- 主体 -->
                 <el-main>
-
+                    <Tabs></Tabs>
                     <router-view></router-view>
                 </el-main>
             </el-container>
@@ -51,10 +53,12 @@
     import { removeToken } from '@/utils/auth';
     import Sidebar from './Sidebar.vue';
     import Clock from './Clock.vue';
+    import Tabs from './Tab.vue';
     export default {
         components: {
             Sidebar,
-            Clock
+            Clock,
+            Tabs
         },
         computed: {
             routes() {

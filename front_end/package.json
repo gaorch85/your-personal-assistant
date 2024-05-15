@@ -4,24 +4,29 @@
   "private": true,
   "scripts": {
     "serve:mock": "vue-cli-service serve --mode mock",
-    "serve:deve": "vue-cli-service serve --mode development",
-    "serve:prod": "vue-cli-service serve --mode production",
+    "serve:dev": "vue-cli-service serve --mode development",
+    "serve:pro": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build"
   },
   "dependencies": {
     "axios": "^1.6.8",
     "core-js": "^3.8.3",
     "element-ui": "^2.15.14",
+    "highlight.js": "^11.9.0",
     "js-cookie": "^3.0.5",
+    "markdown-it-highlightjs": "^4.0.1",
     "mavon-editor": "^2.10.4",
     "mockjs": "^1.1.0",
     "vue": "^2.6.14",
+    "vue-clipboard2": "^0.3.3",
     "vue-markdown": "^2.2.4",
+    "vue-markdown-it": "^0.9.4",
     "vue-router": "^3.6.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "markdown-it": "^14.1.0",
     "vue-template-compiler": "^2.6.14"
   },
   "browserslist": [

@@ -33,7 +33,7 @@ public class Result
     public static Result error()
     {
         Result result = new Result();
-        result.setSuccess(true);
+        result.setSuccess(false);
         result.setMessage("ERROR!");
         return result;
     }
