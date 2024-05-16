@@ -31,6 +31,26 @@ public class BlogLikeService {
         return blogLikeMapper.selectByBlogId(blogId);
     }
 
+    public Integer getLikeSizeByBlogId(Integer blogId)
+    {
+        return blogLikeMapper.getLikeSizeByBlogId(blogId);
+    }
+
+    public Boolean isMyLike(Integer blogId, Integer userId)
+    {
+        System.out.println(blogLikeMapper.getMyLikeId(blogId, userId));
+        return !blogLikeMapper.getMyLikeId(blogId, userId).isEmpty();
+    }
+
+    public Integer getMyLikeId(Integer blogId, Integer userId)
+    {
+        List<Integer> ids = blogLikeMapper.getMyLikeId(blogId, userId);
+        if(ids.isEmpty())
+            return -1;
+        else
+            return ids.getFirst();
+    }
+
     public Result insert(Integer blogId)
     {
         String token = request.getHeader("X-token");

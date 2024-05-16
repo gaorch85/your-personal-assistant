@@ -58,6 +58,14 @@ export function api_delete_like(likeId)
     })
 }
 
+export function api_getCommentsById(postId) 
+{
+    return request({
+      url: `/blog/comment/${postId}`,
+      method: 'get'
+    })
+}
+
 export function api_add_comment(postId, comment)
 {
   return request({
@@ -65,5 +73,12 @@ export function api_add_comment(postId, comment)
     method: 'post',
     data: comment
   })
+}
 
+export function api_delete_comment(id)
+{
+  return request({
+    url: `/blog/comment/${id}`,
+    method: 'delete'
+  })
 }

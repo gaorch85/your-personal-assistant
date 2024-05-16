@@ -13,12 +13,14 @@ public class Blog {
     private String time;
     private String title;
     private String content;
+
     @TableField(exist = false)
-    private List<BlogLike> likes;
+    private Integer likeSize = 0;
     @TableField(exist = false)
-    private List<BlogFavorite> favorites;
+    private Integer favoriteSize = 0;
     @TableField(exist = false)
-    private List<BlogComment> comments;
+    private Integer commentSize = 0;
+
     @TableField(exist = false)
     private Boolean myLike = false;
     @TableField(exist = false)
@@ -27,14 +29,13 @@ public class Blog {
     private Boolean myFavorite = false;
     @TableField(exist = false)
     private Integer myFavoriteId;
+    @TableField(exist = false)
+    private Boolean myBlog = false;
 
     @JsonIgnore
     public int getRecommendIndex()
     {
-        Integer likesSize = this.getLikes()!=null?this.getLikes().size():0;
-        Integer favoritesSize = this.getFavorites()!=null?this.getFavorites().size():0;
-        Integer commentsSize = this.getComments()!=null?this.getComments().size():0;
-        return likesSize + favoritesSize + commentsSize;
+        return this.getLikeSize() + this.getFavoriteSize() + this.getCommentSize();
     }
 
 }

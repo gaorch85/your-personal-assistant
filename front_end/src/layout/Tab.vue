@@ -1,9 +1,8 @@
 <template>
   <div>
-    <el-tabs 
+    <el-tabs
       v-model="activeTabName" 
       type="card" 
-      closable 
       @tab-remove="removeTab"
       @tab-click="clickTab">
       <el-tab-pane
@@ -38,7 +37,8 @@
 
     methods: {
       addTab(route) {
-        const tabName = `${route.name}-${route.params.id}`;
+        console.log("添加标签");
+        const tabName = route.params.id ? `${route.name}-${route.params.id}` : `${route.name}`;
         const existingTab = this.tabs.find(tab => tab.name === tabName);
         if (!existingTab) {
           this.tabs.push({
@@ -52,6 +52,9 @@
           });
         }
         this.activeTabName = tabName;
+        console.log(this.tabs);
+        console.log("结束添加");
+        
       },
 
       removeTab(targetName) {
@@ -62,17 +65,20 @@
             const newActiveTab = this.tabs[this.tabs.length - 1];
             this.$router.push({ name: newActiveTab.route.name, params: newActiveTab.route.params });
           } else if (this.tabs.length === 0) {
-            this.$router.push({ path: '/' });
+            this.$router.push({ path: '/home' });
           }
         }
       },
 
       clickTab(targetTab) {
         const clickedTab = this.tabs.find(tab => tab.name === targetTab.name);
-        if (clickedTab) {
+        if (clickedTab && (this.$route.name !== clickedTab.route.name || this.$route.params.id !== clickedTab.route.params.id)) {
           this.$router.push({ name: clickedTab.route.name, params: clickedTab.route.params });
         }
+        
       }
     }
   }
 </script>
+
+

@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from "@/views/Login.vue"
 import Todo from "@/views/Todo/Todo.vue"
-import TodoList from "@/views/Todo/TodoList.vue"
-import ManageTopic from "@/views/Todo/ManageTopic.vue"
 import Home from "@/views/Home.vue"
 import Personal from "@/views/Personal.vue"
 import Error_403 from "@/views/error/403.vue"
@@ -48,6 +46,7 @@ const routes = [
           path: '/403',
           name: '403',
           component: Error_403,
+          meta: { title: '未授权'}
         }
      ]
     },
@@ -57,9 +56,10 @@ const routes = [
       component: Layout,
       children: [
         {
-          path: 'blog/:id',  // 使用占位符 :id
+          path: 'blog/details/:id',  // 使用占位符 :id
           name: 'BlogPost',
-          component: BlogPost,  // 确保 BlogPost 是已经定义的组件
+          component: BlogPost,
+          meta: { title: '默认标题'}
         }
       ]
     },
@@ -78,6 +78,7 @@ const routes = [
      ]
     },
 
+
     {
       path: '/',
       component: Layout,
@@ -87,22 +88,7 @@ const routes = [
           path: '/todo',
           name: 'Todo',
           component: Todo,
-          redirect: '/todo/list',
           meta: { title: '待办事项', icon: 'el-icon-s-order' },
-          children: [
-            {
-              path: 'list',
-              name: 'Todo-List',
-              component: TodoList,
-              meta: { title: '待办管理', icon: 'el-icon-s-order' }
-            },
-            {
-              path: 'manage_topic',
-              name: 'Todo-ManageTopic',
-              component: ManageTopic,
-              meta: { title: '添加主题', icon: 'el-icon-s-order' }
-            }
-          ]
         }
      ]
     },
@@ -159,5 +145,13 @@ const routes = [
     routes
   })
 
+
+  // 路由守卫，设置动态标题
+  router.beforeEach((to, from, next) => {
+    if (to.name === 'BlogPost' && to.params.title) {
+      to.meta.title = to.params.title;
+    }
+    next();
+  });
   
   export default router

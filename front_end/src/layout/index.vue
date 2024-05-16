@@ -2,7 +2,7 @@
     <div>
         <el-container>
             <!-- 导航栏 -->
-            <el-header style="height: 10vh;">
+            <el-header style="height: 7vh;">
                 <el-row>
                     <el-col :span="3"><div class="grid-content bg-purple">
                         <h2>你的个人助手</h2>
@@ -21,13 +21,12 @@
                     </div></el-col>
 
                 </el-row>
-                <!-- 分隔线 -->
-                <el-divider></el-divider>
             </el-header>
-            
+            <!-- 分隔线 -->
+            <el-divider></el-divider> 
             
             <!-- 下方主体 -->
-            <el-container style="height: 90vh;">
+            <el-container style="height: 92vh;">
                 <!-- 侧边栏 -->
                 <el-aside width="200px">
                     <el-row class="tac">
@@ -38,9 +37,11 @@
                 </el-aside>
                 
                 <!-- 主体 -->
-                <el-main>
+                <el-main class="custom-main">
                     <Tabs></Tabs>
-                    <router-view></router-view>
+                    <div class="really-main">
+                        <router-view></router-view>
+                    </div>
                 </el-main>
             </el-container>
         </el-container>
@@ -110,12 +111,24 @@
   </script>
 
 
-  <!-- 调整分割线的高度 -->
+  
   <style>
+
+    /* 覆盖 el-main 默认 padding */
+    .custom-main {
+    padding: 0 !important;
+    }   
+    /* 调整分割线的高度 */
     .el-divider--horizontal{
-        margin: 8px;
+        margin: 0px;
 
     } 
+    .really-main{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
   </style>
+
+
 
   

@@ -10,4 +10,7 @@ public interface BlogCommentMapper extends BaseMapper<BlogComment> {
     @Select("SELECT * FROM blog_comment WHERE blog_id = #{blogId}")
     public List<BlogComment> selectByBlogId(Integer blogId);
 
+    @Select("SELECT COUNT(*) FROM blog_comment WHERE blog_id = #{blogId}")
+    public Integer getCommentSizeByBlogId(Integer blogId);
+
 }

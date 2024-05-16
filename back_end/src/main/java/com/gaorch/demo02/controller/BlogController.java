@@ -87,6 +87,15 @@ public class BlogController {
         return result.isSuccess() ? Response.ok() : Response.error();
     }
 
+    @GetMapping("/blog/comment/{postId}")
+    public Response getCommentsByBlogId(@PathVariable Integer postId)
+    {
+        System.out.println(postId);
+        Result result = blogCommentService.getCommentsByBlogId(postId);
+        return result.isSuccess() ?
+                Response.ok().setData(result.getData()) : Response.error();
+    }
+
     @PostMapping("/blog/comment/{postId}")
     public Response addComment(@PathVariable Integer postId,@RequestBody BlogComment blogComment)
     {
@@ -94,4 +103,12 @@ public class BlogController {
         Result result = blogCommentService.insert(postId, blogComment.getContent());
         return result.isSuccess() ? Response.ok() : Response.error();
     }
+
+    @DeleteMapping("/blog/comment/{id}")
+    public Response deleteComment(@PathVariable Integer id)
+    {
+        Result result = blogCommentService.delete(id);
+        return result.isSuccess() ? Response.ok() : Response.error();
+    }
+
 }

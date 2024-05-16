@@ -5,7 +5,6 @@ import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
 import router from './router'
 
-
 import './mock'
 
 Vue.prototype.$http = axios

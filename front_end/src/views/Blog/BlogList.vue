@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="list">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="推荐" name="recommend"></el-tab-pane>
         <el-tab-pane label="最新" name="latest"></el-tab-pane>
@@ -8,22 +8,25 @@
         <el-tab-pane label="我的收藏" name="myFavorite"></el-tab-pane>
       </el-tabs>
       
-      <el-card shadow="hover" v-for="post in posts" :key="post.id">
-        <div class="blog-post">
-          <h2 class="post-title">{{ post.title }}</h2>
-          <vue-markdown :source="test" />
-          <div class="post-footer">
-            <span class="post-author">{{ post.username }}</span>
-              <span class="post-date">{{ post.time }}</span>
-              <el-button type="text" @click="viewPost(post.id)">阅读更多</el-button>
+      <div v-if="!posts">
+        <el-empty :image-size="300" description="正在加载"></el-empty>
+      </div>
+      <div v-else-if="posts.length==0">
+        <el-empty :image-size="300" description="暂无数据"></el-empty>
+      </div>
+      <div v-else>
+        <el-card shadow="hover" v-for="post in posts" :key="post.id">
+          <div class="blog-post">
+            <h2 class="post-title">{{ post.title }}</h2>
+            <div class="post-footer">
+              <span class="post-author">{{ post.username }}</span>
+                <span class="post-date">{{ post.time }}</span>
+                <el-button type="text" @click="viewPost(post.id, post.title)">阅读更多</el-button>
+            </div>
           </div>
-
-
-
-        </div>
-      </el-card>
-
-        
+        </el-card>
+      </div>
+      
     </div>
   </template>
   
@@ -41,8 +44,7 @@
 
     data() {
       return {
-        posts: [],
-        test: 'recommend',
+        posts: null,
         activeName: 'recommend',
       };
     },
@@ -55,25 +57,25 @@
       handleClick(tab) 
       {
         this.activeName = tab.name;
-        this.getAll(this.activeName)
-        this.test = tab.name;
+        this.getAll(this.activeName);
         //console.log(this.test);
       },
 
       getAll(sortIndex)
       {
+        this.posts = null;
         api_getAll(sortIndex)
         .then((response)=>
         {
-          this.posts=response.data.data.items;    
+          this.posts = response.data.data.items;    
           //console.log(this.posts);
         })
       },
 
-      viewPost(id) {
+      viewPost(id, title) {
         // 根据postId执行跳转或其他操作
         //console.log('查看博客文章', id);
-        this.$router.push({ name: 'BlogPost', params: { id } });
+        this.$router.push({ name: 'BlogPost', params: { id, title } });
     
       }
     }
@@ -81,6 +83,12 @@
   </script>
   
 <style scoped>
+  .list {
+    max-width: 900px; /* 最大宽度 */
+    margin: 0 auto; /* 居中显示 */
+    font-family: Arial, sans-serif; /* 字体样式 */
+  }
+
   .blog-post {
     margin-bottom: 20px;
   }

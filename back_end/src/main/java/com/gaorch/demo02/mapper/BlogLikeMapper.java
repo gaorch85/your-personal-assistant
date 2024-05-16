@@ -11,4 +11,11 @@ public interface BlogLikeMapper extends BaseMapper<BlogLike> {
     @Select("SELECT * FROM blog_like WHERE blog_id = #{blogId}")
     public List<BlogLike> selectByBlogId(Integer blogId);
 
+    @Select("SELECT COUNT(*) FROM blog_like WHERE blog_id = #{blogId}")
+    public Integer getLikeSizeByBlogId(Integer blogId);
+
+    @Select("SELECT id FROM blog_like WHERE blog_id = #{blogId} AND user_id = #{userId}")
+    public List<Integer> getMyLikeId(Integer blogId, Integer userId);
+
+
 }

@@ -24,15 +24,27 @@ public class BlogCommentService {
     @Autowired
     private HttpServletRequest request;
 
-    public List<BlogComment> getCommentsByBlogId(Integer blogId)
+    public Result getCommentsByBlogId(Integer blogId)
     {
         List<BlogComment> comments = blogCommentMapper.selectByBlogId(blogId);
+
+        String token = request.getHeader("X-token");
+        String username = JwtUtils.getClaimsByToken(token).getSubject();
+        User user = userMapper.selectByUsername(username);
+        Integer userId = user.getId();
+
         for(BlogComment curComment: comments)
         {
-            User user = userMapper.selectById(curComment.getUserId());
-            curComment.setUsername(user.getUsername());
+            User curUser = userMapper.selectById(curComment.getUserId());
+            curComment.setUsername(curUser.getUsername());
+            curComment.setMyComment(userId);
         }
-        return comments;
+        return Result.ok().data("items",comments);
+    }
+
+    public Integer getCommentSizeByBlogId(Integer blogId)
+    {
+        return blogCommentMapper.getCommentSizeByBlogId(blogId);
     }
 
     public Result insert(Integer postId, String comment)

@@ -13,4 +13,11 @@ public class BlogComment {
     private String createdAt;
     @TableField(exist = false)
     private String username;
+    @TableField(exist = false)
+    private Boolean myComment;
+
+    public void setMyComment(Integer userId)
+    {
+        this.myComment = userId.equals(this.getUserId());
+    }
 }

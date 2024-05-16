@@ -1,8 +1,6 @@
 package com.gaorch.demo02.service;
 
 import com.gaorch.demo02.entity.Blog;
-import com.gaorch.demo02.entity.BlogFavorite;
-import com.gaorch.demo02.entity.BlogLike;
 import com.gaorch.demo02.entity.User;
 import com.gaorch.demo02.mapper.*;
 import com.gaorch.demo02.utils.JwtUtils;
@@ -39,38 +37,44 @@ public class BlogService
 
     public List<Blog> listAll()
     {
-        return blogMapper.selectList(null);
+        return blogMapper.selectBasicBlogs();
     }
 
-    public  List<Blog> addOtherData(List<Blog> blog)
+    public  List<Blog> addOtherDataSize(List<Blog> blog)
     {
         for(Blog curBlog: blog)
         {
             Integer blogId = curBlog.getId();
-            curBlog.setLikes(blogLikeService.getLikesByBlogId(blogId));
-            curBlog.setFavorites(blogFavoriteService.getFavoritessByBlogId(blogId));
-            curBlog.setComments(blogCommentService.getCommentsByBlogId(blogId));
+            curBlog.setLikeSize(blogLikeService.getLikeSizeByBlogId(blogId));
+            curBlog.setFavoriteSize(blogFavoriteService.getFavoriteSizeByBlogId(blogId));
+            curBlog.setCommentSize(blogCommentService.getCommentSizeByBlogId(blogId));
         }
         return blog;
     }
 
-    public Result listRecommendAll()
+    public List<Blog> getRecommendBlogs()
     {
-        System.out.println("按推荐排序");
-        List<Blog> list = addOtherData(listAll());
+        List<Blog> list = addOtherDataSize(listAll());
         list.sort(new Comparator<Blog>() {
             @Override
             public int compare(Blog blog1, Blog blog2) {
                 return Integer.compare(blog2.getRecommendIndex(), blog1.getRecommendIndex());
             }
         });
+        return list;
+    }
+
+    public Result listRecommendAll()
+    {
+        System.out.println("按推荐排序");
+        List<Blog> list = this.getRecommendBlogs();
         return Result.ok().data("items", list);
     }
 
     public Result listLatestAll()
     {
         System.out.println("按时间排序");
-        List<Blog> list = addOtherData(listAll());
+        List<Blog> list = addOtherDataSize(listAll());
         list.sort(new Comparator<Blog>() {
             @Override
             public int compare(Blog blog1, Blog blog2) {
@@ -88,8 +92,9 @@ public class BlogService
         System.out.println("按我的显示");
         String token = request.getHeader("X-token");
         String username = JwtUtils.getClaimsByToken(token).getSubject();
-        List<Blog> list = listAll();
-        System.out.println(list);
+
+        List<Blog> list = this.getRecommendBlogs();
+        //System.out.println(list);
         Iterator<Blog> iterator = list.iterator();
         while (iterator.hasNext()) {
             Blog curBlog = iterator.next();
@@ -109,19 +114,15 @@ public class BlogService
         String username = JwtUtils.getClaimsByToken(token).getSubject();
         User user = userMapper.selectByUsername(username);
         Integer userId = user.getId();
-        List<Blog> list = addOtherData(listAll());
+
+        List<Blog> list = this.getRecommendBlogs();
+
         System.out.println(list);
         Iterator<Blog> iterator = list.iterator();
         while (iterator.hasNext()) {
             Blog curBlog = iterator.next();
-            boolean isLike = false;
-            List<BlogLike> curBlogLikes = curBlog.getLikes();
-            for(BlogLike like: curBlogLikes)
-            {
-                if(like.getUserId().equals(userId))
-                    isLike = true;
-            }
-            if(!isLike)
+            Boolean isMyLike = blogLikeService.isMyLike(curBlog.getId(), userId);
+            if(!isMyLike)
                 iterator.remove();
         }
         System.out.println(list);
@@ -130,54 +131,52 @@ public class BlogService
 
     public Result listMyFavoriteAll()
     {
-        System.out.println("按我的的点赞显示");
+        System.out.println("按我的的收藏显示");
         String token = request.getHeader("X-token");
         String username = JwtUtils.getClaimsByToken(token).getSubject();
         User user = userMapper.selectByUsername(username);
         Integer userId = user.getId();
-        List<Blog> list = addOtherData(listAll());
+
+        List<Blog> list = this.getRecommendBlogs();
+
         System.out.println(list);
         Iterator<Blog> iterator = list.iterator();
         while (iterator.hasNext()) {
             Blog curBlog = iterator.next();
-            boolean isFavorite = false;
-            List<BlogFavorite> curBlogFavorites = curBlog.getFavorites();
-            for(BlogFavorite favorite: curBlogFavorites)
-            {
-                if(favorite.getUserId().equals(userId))
-                    isFavorite = true;
-            }
-            if(!isFavorite)
+            Boolean isMyFavorite = blogFavoriteService.isMyFavorite(curBlog.getId(), userId);
+            if(!isMyFavorite)
                 iterator.remove();
         }
         System.out.println(list);
         return Result.ok().data("items", list);
     }
 
-    public Result getPostById(Integer postId)
+    public Result getPostById(Integer blogId)
     {
-        Blog blog = blogMapper.selectById(postId);
-        blog.setLikes(blogLikeService.getLikesByBlogId(postId));
-        blog.setFavorites(blogFavoriteService.getFavoritessByBlogId(postId));
-        blog.setComments(blogCommentService.getCommentsByBlogId(postId));
+        Blog blog = blogMapper.selectById(blogId);
+        blog.setLikeSize(blogLikeService.getLikeSizeByBlogId(blogId));
+        blog.setFavoriteSize(blogFavoriteService.getFavoriteSizeByBlogId(blogId));
 
         String token = request.getHeader("X-token");
         String username = JwtUtils.getClaimsByToken(token).getSubject();
         User user = userMapper.selectByUsername(username);
         Integer userId = user.getId();
 
-        for(BlogLike curLike: blog.getLikes())
-            if(curLike.getUserId().equals(userId)) {
-                blog.setMyLike(true);
-                blog.setMyLikeId(curLike.getId());
-                break;
-            }
-        for(BlogFavorite curFavorite: blog.getFavorites())
-            if(curFavorite.getUserId().equals(userId)) {
-                blog.setMyFavorite(true);
-                blog.setMyFavoriteId(curFavorite.getId());
-                break;
-            }
+        if(blogLikeService.isMyLike(blog.getId(), userId))
+        {
+            blog.setMyLike(true);
+            blog.setMyLikeId(blogLikeService.getMyLikeId(blog.getId(), userId));
+        }
+
+        if(blogFavoriteService.isMyFavorite(blog.getId(), userId))
+        {
+            blog.setMyFavorite(true);
+            blog.setMyFavoriteId(blogFavoriteService.getMyFavoriteId(blog.getId(), userId));
+        }
+
+        if(blog.getUsername().equals(username))
+            blog.setMyBlog(true);
+
         return Result.ok().data("items", blog);
     }
 

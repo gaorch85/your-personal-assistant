@@ -11,4 +11,11 @@ public interface BlogFavoriteMapper extends BaseMapper<BlogFavorite> {
     @Select("SELECT * FROM blog_favorite WHERE blog_id = #{blogId}")
     public List<BlogFavorite> selectByBlogId(Integer blogId);
 
+    @Select("SELECT COUNT(*) FROM blog_favorite WHERE blog_id = #{blogId}")
+    public Integer getFavoriteSizeByBlogId(Integer blogId);
+
+    @Select("SELECT id FROM blog_favorite WHERE blog_id = #{blogId} AND user_id = #{userId}")
+    public List<Integer> getMyFavoriteId(Integer blogId, Integer userId);
+
+
 }

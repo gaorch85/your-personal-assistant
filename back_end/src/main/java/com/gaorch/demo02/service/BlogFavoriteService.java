@@ -30,6 +30,26 @@ public class BlogFavoriteService {
         return blogFavoriteMapper.selectByBlogId(blogId);
     }
 
+    public Integer getFavoriteSizeByBlogId(Integer blogId)
+    {
+        return blogFavoriteMapper.getFavoriteSizeByBlogId(blogId);
+    }
+
+    public Boolean isMyFavorite(Integer blogId, Integer userId)
+    {
+        System.out.println(blogFavoriteMapper.getMyFavoriteId(blogId, userId));
+        return !blogFavoriteMapper.getMyFavoriteId(blogId, userId).isEmpty();
+    }
+
+    public Integer getMyFavoriteId(Integer blogId, Integer userId)
+    {
+        List<Integer> ids = blogFavoriteMapper.getMyFavoriteId(blogId, userId);
+        if(ids.isEmpty())
+            return -1;
+        else
+            return ids.getFirst();
+    }
+
     public Result insert(Integer blogId)
     {
         String token = request.getHeader("X-token");
