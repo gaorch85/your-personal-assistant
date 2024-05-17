@@ -35,6 +35,11 @@ public class BlogFavoriteService {
         return blogFavoriteMapper.getFavoriteSizeByBlogId(blogId);
     }
 
+    public Boolean deleteFavoritesByBlogId(Integer blogId)
+    {
+        return blogFavoriteMapper.deleteFavoritesByBlogId(blogId);
+    }
+
     public Boolean isMyFavorite(Integer blogId, Integer userId)
     {
         System.out.println(blogFavoriteMapper.getMyFavoriteId(blogId, userId));

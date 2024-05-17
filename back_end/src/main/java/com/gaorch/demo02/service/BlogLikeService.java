@@ -31,6 +31,11 @@ public class BlogLikeService {
         return blogLikeMapper.selectByBlogId(blogId);
     }
 
+    public Boolean deleteLikesByBlogId(Integer blogId)
+    {
+        return blogLikeMapper.deleteLikesByBlogId(blogId);
+    }
+
     public Integer getLikeSizeByBlogId(Integer blogId)
     {
         return blogLikeMapper.getLikeSizeByBlogId(blogId);

@@ -18,6 +18,14 @@ export function api_insert(data)
     })
 }
 
+export function api_delete(postId) 
+{
+    return request({
+      url: `/blog/${postId}`,
+      method: 'delete'
+    })
+}
+
 export function api_getPostById(postId) 
 {
     return request({

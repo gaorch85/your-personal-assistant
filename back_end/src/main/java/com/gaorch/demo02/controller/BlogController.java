@@ -43,7 +43,7 @@ public class BlogController {
     }
 
     @GetMapping("/blog/{postId}")
-    public Response getPostById(@PathVariable Integer postId)
+    public Response getBlogById(@PathVariable Integer postId)
     {
         System.out.println(postId);
         Result result = blogService.getPostById(postId);
@@ -51,13 +51,21 @@ public class BlogController {
                 Response.ok().setData(result.getData()) : Response.error();
     }
 
+    @DeleteMapping("/blog/{postId}")
+    public Response deleteBlogById(@PathVariable Integer postId)
+    {
+        Result result = blogService.delete(postId);
+        return result.isSuccess() ? Response.ok() : Response.error();
+    }
 
     @PostMapping("/blog")
-    public Response insertUser(@RequestBody Blog blog)
+    public Response insertBlog(@RequestBody Blog blog)
     {
         Result result = blogService.insert(blog);
         return result.isSuccess() ? Response.ok() : Response.error();
     }
+
+
 
     @PostMapping("/blog/like/{postId}")
     public Response insertLike(@PathVariable Integer postId)

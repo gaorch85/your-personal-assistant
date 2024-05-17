@@ -1,0 +1,65 @@
+{
+  "id": "4550108",
+  "name": "myIcon",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5706603",
+      "name": "icon_like",
+      "font_class": "icon-",
+      "unicode": "e70b",
+      "unicode_decimal": 59147
+    },
+    {
+      "icon_id": "5706604",
+      "name": "icon_like_sel",
+      "font_class": "icon-1",
+      "unicode": "e70c",
+      "unicode_decimal": 59148
+    },
+    {
+      "icon_id": "5774525",
+      "name": "icon_like",
+      "font_class": "icon-2",
+      "unicode": "e74b",
+      "unicode_decimal": 59211
+    },
+    {
+      "icon_id": "5774526",
+      "name": "icon_like_sel",
+      "font_class": "icon-3",
+      "unicode": "e74c",
+      "unicode_decimal": 59212
+    },
+    {
+      "icon_id": "2076187",
+      "name": " 收藏2",
+      "font_class": "shoucang",
+      "unicode": "e86d",
+      "unicode_decimal": 59501
+    },
+    {
+      "icon_id": "2076189",
+      "name": " 收藏",
+      "font_class": "shoucang1",
+      "unicode": "e86e",
+      "unicode_decimal": 59502
+    },
+    {
+      "icon_id": "2076195",
+      "name": "赞2",
+      "font_class": "zan",
+      "unicode": "e870",
+      "unicode_decimal": 59504
+    },
+    {
+      "icon_id": "2076196",
+      "name": "赞",
+      "font_class": "zan1",
+      "unicode": "e871",
+      "unicode_decimal": 59505
+    }
+  ]
+}

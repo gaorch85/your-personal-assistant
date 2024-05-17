@@ -13,7 +13,6 @@
                         <clock></clock>
                     </div></el-col>
 
-                    
 
                     <el-col :span="2" :offset="13"><div class="grid-content bg-purple">
                         <br>

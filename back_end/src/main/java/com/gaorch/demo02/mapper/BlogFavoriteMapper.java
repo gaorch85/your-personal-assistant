@@ -3,6 +3,7 @@ package com.gaorch.demo02.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gaorch.demo02.entity.BlogFavorite;
 import com.gaorch.demo02.entity.BlogLike;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -17,5 +18,7 @@ public interface BlogFavoriteMapper extends BaseMapper<BlogFavorite> {
     @Select("SELECT id FROM blog_favorite WHERE blog_id = #{blogId} AND user_id = #{userId}")
     public List<Integer> getMyFavoriteId(Integer blogId, Integer userId);
 
+    @Delete("DELETE FROM blog_favorite WHERE blog_id = #{blogId}")
+    public Boolean deleteFavoritesByBlogId(Integer blogId);
 
 }

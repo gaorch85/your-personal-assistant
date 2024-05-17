@@ -42,12 +42,21 @@ public class BlogService
 
     public  List<Blog> addOtherDataSize(List<Blog> blog)
     {
+
+        String token = request.getHeader("X-token");
+        String username = JwtUtils.getClaimsByToken(token).getSubject();
+        User user = userMapper.selectByUsername(username);
+        Integer userId = user.getId();
+
+
         for(Blog curBlog: blog)
         {
             Integer blogId = curBlog.getId();
             curBlog.setLikeSize(blogLikeService.getLikeSizeByBlogId(blogId));
             curBlog.setFavoriteSize(blogFavoriteService.getFavoriteSizeByBlogId(blogId));
             curBlog.setCommentSize(blogCommentService.getCommentSizeByBlogId(blogId));
+            curBlog.setMyLike(blogLikeService.isMyLike(blogId, userId));
+            curBlog.setMyFavorite(blogFavoriteService.isMyFavorite(blogId, userId));
         }
         return blog;
     }
@@ -109,20 +118,11 @@ public class BlogService
 
     public Result listMyLikeAll()
     {
-        System.out.println("按我的的点赞显示");
-        String token = request.getHeader("X-token");
-        String username = JwtUtils.getClaimsByToken(token).getSubject();
-        User user = userMapper.selectByUsername(username);
-        Integer userId = user.getId();
-
         List<Blog> list = this.getRecommendBlogs();
-
-        System.out.println(list);
         Iterator<Blog> iterator = list.iterator();
         while (iterator.hasNext()) {
             Blog curBlog = iterator.next();
-            Boolean isMyLike = blogLikeService.isMyLike(curBlog.getId(), userId);
-            if(!isMyLike)
+            if(!curBlog.getMyLike())
                 iterator.remove();
         }
         System.out.println(list);
@@ -131,20 +131,12 @@ public class BlogService
 
     public Result listMyFavoriteAll()
     {
-        System.out.println("按我的的收藏显示");
-        String token = request.getHeader("X-token");
-        String username = JwtUtils.getClaimsByToken(token).getSubject();
-        User user = userMapper.selectByUsername(username);
-        Integer userId = user.getId();
-
         List<Blog> list = this.getRecommendBlogs();
 
-        System.out.println(list);
         Iterator<Blog> iterator = list.iterator();
         while (iterator.hasNext()) {
             Blog curBlog = iterator.next();
-            Boolean isMyFavorite = blogFavoriteService.isMyFavorite(curBlog.getId(), userId);
-            if(!isMyFavorite)
+            if(!curBlog.getMyFavorite())
                 iterator.remove();
         }
         System.out.println(list);
@@ -189,6 +181,14 @@ public class BlogService
         blog.setId(0);
         int i = blogMapper.insert(blog);
         return i > 0 ? Result.ok() : Result.error();
+    }
+
+    public Result delete(Integer blogId)
+    {
+        blogLikeService.deleteLikesByBlogId(blogId);
+        blogCommentService.deleteCommentsByBlogId(blogId);
+        blogFavoriteService.deleteFavoritesByBlogId(blogId);
+        return blogMapper.deleteById(blogId) > 0 ? Result.ok() : Result.error();
     }
 
 }

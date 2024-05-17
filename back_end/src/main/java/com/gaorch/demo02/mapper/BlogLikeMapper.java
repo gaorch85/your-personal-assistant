@@ -3,6 +3,7 @@ package com.gaorch.demo02.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gaorch.demo02.entity.BlogLike;
 import com.gaorch.demo02.entity.User;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -16,6 +17,10 @@ public interface BlogLikeMapper extends BaseMapper<BlogLike> {
 
     @Select("SELECT id FROM blog_like WHERE blog_id = #{blogId} AND user_id = #{userId}")
     public List<Integer> getMyLikeId(Integer blogId, Integer userId);
+
+
+    @Delete("DELETE FROM blog_like WHERE blog_id = #{blogId}")
+    public Boolean deleteLikesByBlogId(Integer blogId);
 
 
 }

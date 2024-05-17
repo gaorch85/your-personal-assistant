@@ -27,33 +27,28 @@
           <vue-markdown-it :source="post.content" :highlight="true"></vue-markdown-it>
         </div>
         
+
         <div class="like_favorite">
           <div class="like">
-            <div v-if="post.myLike">
-              <el-button type="success" icon="el-icon-check" circle @click="like()"></el-button>
-            </div>
-            <div v-else>
-              <el-button icon="el-icon-check" circle @click="like()"></el-button>
-            </div>
-            <span>
-              {{ post.likeSize }}
-            </span>
+            <i 
+              :class="{'iconfont icon-zan': post.myLike, 'iconfont icon-zan1': !post.myLike}" 
+              @click="like">
+            </i>
+            <span>{{ post.likeSize }}</span>
           </div>
           <div class="favorite">
-            <div v-if="post.myFavorite">
-              <el-button type="success" icon="el-icon-star-off" circle @click="favorite()"></el-button>
-            </div>
-            <div v-else>
-              <el-button icon="el-icon-star-off" circle @click="favorite()"></el-button>
-            </div>
-            <span>
-              {{ post.favoriteSize }}
-            </span>
+            <i 
+              :class="{'iconfont icon-shoucang': post.myFavorite, 'iconfont icon-shoucang1': !post.myFavorite}" 
+              @click="favorite">
+            </i>
+            <span>{{ post.favoriteSize }}</span>
           </div>
-          
         </div>
-       
 
+        <div v-if="post.myBlog" class="Post-delete">
+          <el-button type="danger" icon="el-icon-delete" @click="deletePost()">删除博客</el-button>
+        </div>
+        
         <div class="comment">
           <div class="comment-box">
             <el-input
@@ -104,7 +99,7 @@
   import VueMarkdownIt from 'vue-markdown-it';
   //import markdownItHighlight from 'markdown-it-highlightjs';
   import { api_getPostById, api_insert_like, api_delete_like, api_insert_favorite, api_delete_favorite, 
-    api_getCommentsById, api_add_comment, api_delete_comment } from "@/api/blog"
+    api_getCommentsById, api_add_comment, api_delete_comment, api_delete } from "@/api/blog"
   export default {
     name: 'BlogPost',
     components:{
@@ -137,6 +132,32 @@
             {
                 this.post = response.data.data.items;    
             //console.log(this.posts);
+            });
+        },
+
+        deletePost()
+        {
+          this.$confirm('即将删除博客, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'error',
+            center: true
+            }).then(() => {
+              console.log("开始删除");
+                api_delete(this.postId)
+                .then((response)=>
+                {
+                  if(response.data.code = 40000)
+                  {
+                    this.$message.success('删除博客成功!');
+                    this.$router.push({ name: "Blog-List"});
+                  }
+                });
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消'
+                });
             });
         },
 
@@ -421,28 +442,57 @@
   margin-bottom: 16px; /* 图片下边距 */
 }
 
+
+
 .like_favorite {
   display: flex;
-  justify-content: center; /* 水平居中 */
+  justify-content: center;
   align-items: center;
-  margin: 20px 0; /* 上下增加距离 */
+  margin: 20px 0;
+  gap: 20px;
 }
 
-.like_favorite .like,
-.like_favorite .favorite {
+.like, .favorite {
   display: flex;
   align-items: center;
-  margin: 0 15px; /* 按钮组之间的间距 */
+  cursor: pointer;
 }
 
-.like_favorite .el-button {
-  margin-right: 10px; /* 按钮与数字之间的间距 */
+.like i, .favorite i {
+  font-size: 24px;
+  margin-right: 5px;
 }
 
-.like_favorite span {
-  font-size: 16px; /* 调整点赞和收藏数量的字体大小 */
-  color: #333; /* 数量字体颜色 */
+.like i.iconfont.icon-zan,
+.like i.iconfont.icon-zan1,
+.favorite i.iconfont.icon-shoucang,
+.favorite i.iconfont.icon-shoucang1 {
+  transition: color 0.3s;
 }
+
+.like i.iconfont.icon-zan {
+  color: #ff6b6b; /* 红色代表点赞 */
+}
+
+.like i.iconfont.icon-zan1 {
+  color: #cccccc; /* 灰色代表未点赞 */
+}
+
+.favorite i.iconfont.icon-shoucang {
+  color: #ffd700; /* 金色代表收藏 */
+}
+
+.favorite i.iconfont.icon-shoucang1 {
+  color: #cccccc; /* 灰色代表未收藏 */
+}
+
+.Post-delete {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 
 .comment {
   max-width: 900px; /* 最大宽度 */

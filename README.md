@@ -37,15 +37,22 @@ npm install
 ```
 安装成功之后，命令行执行以下命令，即可成功运行  
 
-不启动后端程序，全部使用Mock模拟数据(大部分没有Mock，见谅)：
+- 不启动后端程序，全部使用Mock模拟数据(大部分没有Mock，见谅)：
 ```bash
 npm run serve:mock
 ```
-先启动后端程序，进行数据库-后端-前端真实运行：
+- 先启动后端程序，进行数据库-后端-前端真实运行：
 ```bash
 npm run serve:production
 ```  
-连接作者服务器上运行的后端程序：
+- 连接作者服务器上运行的后端程序：
 ```bash
 npm run serve:development
 ```  
+
+### 学习参考资料：
+- [vue-admin-element](https://github.com/PanJiaChen/vue-admin-template)
+- [vue-pure-admin](https://github.com/pure-admin/vue-pure-admin)
+- [1天搞定SpringBoot+Vue全栈开发](https://www.bilibili.com/video/BV1nV4y1s7ZN/?spm_id_from=333.999.0.0&vd_source=df18e9914dc371a29432058a6d7d32fd)
+- [2小时搞定Docker 全程干货 基于CentOS7](https://www.bilibili.com/video/BV1vP4y1m76P/?spm_id_from=333.999.0.0&vd_source=df18e9914dc371a29432058a6d7d32fd)
+- [ChatGPT](https://chatgpt.com/)
