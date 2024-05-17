@@ -21,4 +21,7 @@ public interface BlogFavoriteMapper extends BaseMapper<BlogFavorite> {
     @Delete("DELETE FROM blog_favorite WHERE blog_id = #{blogId}")
     public Boolean deleteFavoritesByBlogId(Integer blogId);
 
+    @Delete("DELETE FROM blog_favorite WHERE user_id = #{userId}")
+    public Boolean deleteAllByUserId(Integer userId);
+
 }

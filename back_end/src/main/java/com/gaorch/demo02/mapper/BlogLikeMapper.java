@@ -22,5 +22,8 @@ public interface BlogLikeMapper extends BaseMapper<BlogLike> {
     @Delete("DELETE FROM blog_like WHERE blog_id = #{blogId}")
     public Boolean deleteLikesByBlogId(Integer blogId);
 
+    @Delete("DELETE FROM blog_like WHERE user_id = #{userId}")
+    public Boolean deleteAllByUserId(Integer userId);
+
 
 }

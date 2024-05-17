@@ -191,4 +191,22 @@ public class BlogService
         return blogMapper.deleteById(blogId) > 0 ? Result.ok() : Result.error();
     }
 
+    public Boolean deleteAllByUsername(String username)
+    {
+        List<Blog> blogs = blogMapper.selectByUsername(username);
+        Iterator<Blog> iterator = blogs.iterator();
+        while (iterator.hasNext()) {
+            Blog curBlog = iterator.next();
+            this.delete(curBlog.getId());
+        }
+
+        User user = userMapper.selectByUsername(username);
+        Integer userId = user.getId();
+        blogLikeService.deleteAllByUserId(userId);
+        blogFavoriteService.deleteAllByUserId(userId);
+        blogCommentService.deleteAllByUserId(userId);
+
+        return true;
+    }
+
 }

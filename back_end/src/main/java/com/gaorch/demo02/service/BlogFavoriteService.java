@@ -40,6 +40,11 @@ public class BlogFavoriteService {
         return blogFavoriteMapper.deleteFavoritesByBlogId(blogId);
     }
 
+    public Boolean deleteAllByUserId(Integer userId)
+    {
+        return blogFavoriteMapper.deleteAllByUserId(userId);
+    }
+
     public Boolean isMyFavorite(Integer blogId, Integer userId)
     {
         System.out.println(blogFavoriteMapper.getMyFavoriteId(blogId, userId));

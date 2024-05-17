@@ -47,6 +47,11 @@ public class BlogCommentService {
         return blogCommentMapper.deleteCommentsByBlogId(blogId);
     }
 
+    public Boolean deleteAllByUserId(Integer userId)
+    {
+        return blogCommentMapper.deleteAllByUserId(userId);
+    }
+
     public Integer getCommentSizeByBlogId(Integer blogId)
     {
         return blogCommentMapper.getCommentSizeByBlogId(blogId);

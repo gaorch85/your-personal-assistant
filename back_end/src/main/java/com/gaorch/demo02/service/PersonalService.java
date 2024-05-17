@@ -16,6 +16,12 @@ public class PersonalService
     private UserMapper userMapper;
 
     @Autowired
+    private BlogService blogService;
+
+    @Autowired
+    private TodoService todoService;
+
+    @Autowired
     private HttpServletRequest request;     //用于解析请求头中的token
 
     public Result getInfo()
@@ -54,8 +60,14 @@ public class PersonalService
     {
         String token = request.getHeader("X-token");
         String username = JwtUtils.getClaimsByToken(token).getSubject();
-        int i =  userMapper.deleteByUsername(username);
-        return i > 0 ? Result.ok() : Result.error();
+        User user = userMapper.selectByUsername(username);
+        Integer userId = user.getId();
+
+        blogService.deleteAllByUsername(username);
+        todoService.deleteAllByUserId(userId);
+
+        return userMapper.deleteById(userId) > 0 ?
+                Result.ok() : Result.error();
     }
 
 }

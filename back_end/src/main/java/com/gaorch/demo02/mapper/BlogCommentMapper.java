@@ -16,4 +16,7 @@ public interface BlogCommentMapper extends BaseMapper<BlogComment> {
 
     @Delete("DELETE FROM blog_comment WHERE blog_id = #{blogId}")
     public Boolean deleteCommentsByBlogId(Integer blogId);
+
+    @Delete("DELETE FROM blog_comment WHERE user_id = #{userId}")
+    public Boolean deleteAllByUserId(Integer userId);
 }

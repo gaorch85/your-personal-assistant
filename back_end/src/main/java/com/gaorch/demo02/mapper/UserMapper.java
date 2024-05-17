@@ -10,8 +10,6 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("SELECT * FROM user WHERE username = #{username}")
     public User selectByUsername(String username);
 
-    @Select("DELETE FROM user WHERE username = #{username}")
-    public int deleteByUsername(String username);
 
 
 }

@@ -12,10 +12,12 @@ CREATE TABLE user
 CREATE TABLE todo
 (
     id       BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id    BIGINT NOT NULL,
     topic    VARCHAR(255) NOT NULL,
     details  VARCHAR(255) NOT NULL,
     deadline TIMESTAMP     NOT NULL,
-    status   BOOLEAN DEFAULT 0
+    status   BOOLEAN DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
 CREATE TABLE blog

@@ -64,9 +64,7 @@ public class BlogController {
         Result result = blogService.insert(blog);
         return result.isSuccess() ? Response.ok() : Response.error();
     }
-
-
-
+    
     @PostMapping("/blog/like/{postId}")
     public Response insertLike(@PathVariable Integer postId)
     {

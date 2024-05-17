@@ -13,5 +13,8 @@ public interface BlogMapper extends BaseMapper<Blog> {
     @Select("SELECT id, username, time, title FROM blog")
     public List<Blog> selectBasicBlogs();
 
+    @Select("SELECT * FROM blog WHERE username = #{username}")
+    public List<Blog> selectByUsername(String username);
+
 
 }
