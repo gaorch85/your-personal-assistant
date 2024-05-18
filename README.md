@@ -43,11 +43,11 @@ npm run serve:mock
 ```
 - 先启动后端程序，进行数据库-后端-前端真实运行：
 ```bash
-npm run serve:production
+npm run serve:development
 ```  
 - 连接作者服务器上运行的后端程序：
 ```bash
-npm run serve:development
+npm run serve:production
 ```  
 
 ### 学习参考资料：
