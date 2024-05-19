@@ -37,9 +37,9 @@
                 
                 <!-- 主体 -->
                 <el-main class="custom-main">
-                    <Tabs></Tabs>
+                    <Tabs ref="tabs"></Tabs>
                     <div class="really-main">
-                        <router-view></router-view>
+                        <router-view @blogDeleted="handleBlogDeleted"></router-view>
                     </div>
                 </el-main>
             </el-container>
@@ -104,6 +104,9 @@
             {
                 removeToken();
                 this.$router.push('/login')
+            },
+            handleBlogDeleted(postId) {
+            this.$refs.tabs.handleBlogDeleted(postId);
             }
         }
     };

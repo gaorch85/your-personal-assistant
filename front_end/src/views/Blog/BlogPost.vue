@@ -151,6 +151,7 @@
                   {
                     this.$message.success('删除博客成功!');
                     this.$router.push({ name: "Blog-List"});
+                    this.$emit('blogDeleted', this.postId);
                   }
                 });
             }).catch(() => {

@@ -70,6 +70,14 @@
         }
       },
 
+      handleBlogDeleted(postId) {
+        //console.log("删除博客的标签" + postId)
+        const tabName = this.tabs.find(tab => tab.route.params.id === postId)?.name;
+        if (tabName) {
+          this.removeTab(tabName);
+        }
+      },
+
       clickTab(targetTab) {
         const clickedTab = this.tabs.find(tab => tab.name === targetTab.name);
         if (clickedTab && (this.$route.name !== clickedTab.route.name || this.$route.params.id !== clickedTab.route.params.id)) {
