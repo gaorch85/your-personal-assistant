@@ -76,7 +76,6 @@
       {
         this.activeName = tab.name;
         this.getAll(this.activeName);
-        //console.log(this.test);
       },
 
       getAll(sortIndex)
@@ -86,15 +85,11 @@
         .then((response)=>
         {
           this.posts = response.data.data.items;    
-          //console.log(this.posts);
         })
       },
 
       viewPost(id, title) {
-        // 根据postId执行跳转或其他操作
-        //console.log('查看博客文章', id);
         this.$router.push({ name: 'BlogPost', params: { id, title } });
-    
       }
     }
   };

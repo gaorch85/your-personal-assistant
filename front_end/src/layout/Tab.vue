@@ -37,7 +37,6 @@
 
     methods: {
       addTab(route) {
-        console.log("添加标签");
         const tabName = route.params.id ? `${route.name}-${route.params.id}` : `${route.name}`;
         const existingTab = this.tabs.find(tab => tab.name === tabName);
         if (!existingTab) {
@@ -52,9 +51,6 @@
           });
         }
         this.activeTabName = tabName;
-        console.log(this.tabs);
-        console.log("结束添加");
-        
       },
 
       removeTab(targetName) {

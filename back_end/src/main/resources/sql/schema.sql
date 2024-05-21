@@ -61,3 +61,23 @@ CREATE TABLE blog_favorite
     FOREIGN KEY (blog_id) REFERENCES blog (id)
 );
 
+CREATE TABLE course
+(
+    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    user_id    BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (id)
+);
+
+CREATE TABLE schedule
+(
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    course_name VARCHAR(255) NOT NULL,
+    time_index  INT CHECK (`time_index` >= 1 AND `time_index` <= 14),
+    day_index   INT CHECK (`day_index` >= 1 AND `day_index` <= 7),
+    user_id     BIGINT       NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (course_name) REFERENCES course (name)
+);
+
+
