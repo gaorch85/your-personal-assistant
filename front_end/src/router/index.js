@@ -10,6 +10,9 @@ import Blog from "@/views/Blog/Blog.vue"
 import BlogPost from '@/views/Blog/BlogPost.vue'
 import BlogList from "@/views/Blog/BlogList.vue"
 import CreateBlog from "@/views/Blog/CreateBlog.vue"
+import Schedule from "@/views/Schedule/Schedule.vue"
+import Curriculum from '@/views/Schedule/Curriculum.vue'
+import AddCourse from '@/views/Schedule/AddCourse.vue'
 import Layout from "@/layout"
 
 Vue.use(Router)
@@ -124,7 +127,36 @@ const routes = [
      ]
     },
 
-
+    {
+      path: '/',
+      component: Layout,
+      show: true,
+      children: [
+        {
+          path: '/schedule',
+          name: 'Schedule',
+          component: Schedule,
+          redirect: '/schedule/curriculum',
+          meta: { title: '课表', icon: 'el-icon-s-order' },
+          children: [
+            {
+              path: 'curriculum',
+              name: 'Schedule-Curriculum',
+              component: Curriculum,
+              meta: { title: '我的课表', icon: 'el-icon-s-order' }
+            },
+            
+            {
+              path: 'addcourse',
+              name: 'Schedule-addCourse',
+              component: AddCourse,
+              meta: { title: '课程管理', icon: 'el-icon-s-order' }
+            }
+            
+          ]
+        }
+     ]
+    },
 
     {
       path: '/',
