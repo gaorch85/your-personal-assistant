@@ -13,6 +13,7 @@ public class Blog {
     private String time;
     private String title;
     private String content;
+    private Boolean isPublic;
 
     @TableField(exist = false)
     private Integer likeSize = 0;

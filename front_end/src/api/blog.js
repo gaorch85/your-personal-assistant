@@ -26,6 +26,14 @@ export function api_delete(postId)
     })
 }
 
+export function api_update(postId) 
+{
+    return request({
+      url: `/blog/${postId}`,
+      method: 'put'
+    })
+}
+
 export function api_getPostById(postId) 
 {
     return request({

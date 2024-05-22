@@ -12,21 +12,22 @@ CREATE TABLE user
 CREATE TABLE todo
 (
     id       BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id    BIGINT NOT NULL,
+    user_id  BIGINT       NOT NULL,
     topic    VARCHAR(255) NOT NULL,
     details  VARCHAR(255) NOT NULL,
-    deadline TIMESTAMP     NOT NULL,
+    deadline TIMESTAMP    NOT NULL,
     status   BOOLEAN DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
 CREATE TABLE blog
 (
-    id       BIGINT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    time     TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    title    VARCHAR(255) NOT NULL,
-    content  text         NOT NULL,
+    id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username  VARCHAR(255) NOT NULL,
+    time      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    title     VARCHAR(255) NOT NULL,
+    content   text         NOT NULL,
+    is_public BOOLEAN               DEFAULT 0,
     FOREIGN KEY (username) REFERENCES user (username)
 );
 
@@ -63,9 +64,9 @@ CREATE TABLE blog_favorite
 
 CREATE TABLE course
 (
-    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL,
-    user_id    BIGINT NOT NULL,
+    id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name    VARCHAR(255) UNIQUE NOT NULL,
+    user_id BIGINT              NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 

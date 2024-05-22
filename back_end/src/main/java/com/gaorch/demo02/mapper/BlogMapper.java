@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface BlogMapper extends BaseMapper<Blog> {
-    @Select("SELECT id, username, time, title FROM blog")
+    @Select("SELECT id, username, time, title, is_public FROM blog")
     public List<Blog> selectBasicBlogs();
 
     @Select("SELECT * FROM blog WHERE username = #{username}")

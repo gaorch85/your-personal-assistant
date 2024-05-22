@@ -28,7 +28,7 @@ public class BlogController {
     public Response getAll(@PathVariable String sortIndex)
     {
         System.out.println(sortIndex);
-        Result result = blogService.listRecommendAll();
+        Result result = Result.error();
         if("latest".equals(sortIndex))
             result = blogService.listLatestAll();
         if("myBlog".equals(sortIndex))
@@ -37,7 +37,8 @@ public class BlogController {
             result = blogService.listMyLikeAll();
         if("myFavorite".equals(sortIndex))
             result = blogService.listMyFavoriteAll();
-
+        if("recommend".equals(sortIndex))
+            result = blogService.listRecommendAll();
         return result.isSuccess() ?
                 Response.ok().setData(result.getData()) : Response.error();
     }
@@ -45,7 +46,7 @@ public class BlogController {
     @GetMapping("/blog/{postId}")
     public Response getBlogById(@PathVariable Integer postId)
     {
-        System.out.println(postId);
+        //System.out.println(postId);
         Result result = blogService.getPostById(postId);
         return result.isSuccess() ?
                 Response.ok().setData(result.getData()) : Response.error();
@@ -55,6 +56,13 @@ public class BlogController {
     public Response deleteBlogById(@PathVariable Integer postId)
     {
         Result result = blogService.delete(postId);
+        return result.isSuccess() ? Response.ok() : Response.error();
+    }
+
+    @PutMapping("/blog/{postId}")
+    public Response changeBlogById(@PathVariable Integer postId)
+    {
+        Result result = blogService.changeBlogById(postId);
         return result.isSuccess() ? Response.ok() : Response.error();
     }
 

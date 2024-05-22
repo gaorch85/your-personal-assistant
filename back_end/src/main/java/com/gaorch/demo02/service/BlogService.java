@@ -57,13 +57,24 @@ public class BlogService
             curBlog.setCommentSize(blogCommentService.getCommentSizeByBlogId(blogId));
             curBlog.setMyLike(blogLikeService.isMyLike(blogId, userId));
             curBlog.setMyFavorite(blogFavoriteService.isMyFavorite(blogId, userId));
+            curBlog.setMyBlog(Objects.equals(username, curBlog.getUsername()));
         }
         return blog;
     }
 
+
     public List<Blog> getRecommendBlogs()
     {
+
         List<Blog> list = addOtherDataSize(listAll());
+        Iterator<Blog> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Blog curBlog = iterator.next();
+            if (!curBlog.getIsPublic() && !curBlog.getMyBlog())
+            {
+                iterator.remove();
+            }
+        }
         list.sort(new Comparator<Blog>() {
             @Override
             public int compare(Blog blog1, Blog blog2) {
@@ -107,7 +118,7 @@ public class BlogService
         Iterator<Blog> iterator = list.iterator();
         while (iterator.hasNext()) {
             Blog curBlog = iterator.next();
-            if (!Objects.equals(curBlog.getUsername(), username)) {
+            if (!curBlog.getMyBlog()) {
                 System.out.println("不符合条件，移除");
                 iterator.remove();
             }
@@ -190,6 +201,15 @@ public class BlogService
         blogFavoriteService.deleteFavoritesByBlogId(blogId);
         return blogMapper.deleteById(blogId) > 0 ? Result.ok() : Result.error();
     }
+
+    public Result changeBlogById(Integer blogId)
+    {
+        Blog blog = blogMapper.selectById(blogId);
+        blog.setIsPublic(!blog.getIsPublic());
+        int i = blogMapper.updateById(blog);
+        return i > 0 ? Result.ok() : Result.error();
+    }
+
 
     public Boolean deleteAllByUsername(String username)
     {

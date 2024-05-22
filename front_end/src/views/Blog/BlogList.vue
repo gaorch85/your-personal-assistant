@@ -26,6 +26,9 @@
                   <span class="post-date">{{ post.time }}</span>
                 </div>
                 <div class="like-favorite-comment">
+                  <div v-if="!post.isPublic" style="font-size: 24px;">
+                    <i class='el-icon-lock'></i>
+                  </div>
                   <div class="like">
                     <i :class="{'iconfont icon-zan': post.myLike, 'iconfont icon-zan1': !post.myLike}"></i>
                     <span>{{ post.likeSize }}</span>

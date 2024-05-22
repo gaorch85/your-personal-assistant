@@ -5,11 +5,18 @@
         <span>创建博客</span>
       </div>
       <el-form :model="form" label-width="80px" class="blog-form">
-        <el-form-item label="标题">
+        <el-form-item label="标题:">
           <el-input v-model="form.title" placeholder="请输入标题"></el-input>
         </el-form-item>
-        <el-form-item label="内容">
+        <el-form-item label="内容:">
           <mavon-editor  v-model="form.content"></mavon-editor>
+        </el-form-item>
+        <el-form-item label="是否公开:">
+          <el-switch
+            v-model="form.isPublic"
+            active-text="公开"
+            inactive-text="私密">
+          </el-switch>
         </el-form-item>
         <el-form-item class="form-footer">
           <el-button type="primary" @click="insert">创建</el-button>
@@ -32,7 +39,8 @@ export default {
     return {
       form: {
         title: '',
-        content: ''
+        content: '',
+        isPublic: true
       }
     };
   },
@@ -50,9 +58,17 @@ export default {
                 api_insert(this.form)
                   .then((response)=>
                   {
-                    if(response.data.code = 40000)
+                    if(response.data.code === 40000)
                     {
                       this.$message.success('创建成功!');
+                      this.form = {
+                              title: '',
+                              content: ''
+                            };
+                    }
+                    else
+                    {
+                      this.$message.error('创建失败!');
                       this.form = {
                               title: '',
                               content: ''

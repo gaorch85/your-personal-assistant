@@ -18,8 +18,18 @@
               <i class="el-icon-time"></i>
               <span class="publish-date">{{ post.time }}</span>
             </div>
+            <div class="visibility-info">
+              <div v-if="post.isPublic">
+                <span class="publish-date">public</span>
+              </div>
+              <div v-else>
+                <i class="el-icon-lock"></i>
+                <span class="publish-date">private</span>
+              </div>
+            </div>
           </div>
         </div>
+        
 
         <br><br>
 
@@ -47,6 +57,7 @@
 
         <div v-if="post.myBlog" class="Post-delete">
           <el-button type="danger" icon="el-icon-delete" @click="deletePost()">删除博客</el-button>
+          <el-button type="success" @click="updatePost()">{{ post.isPublic ? "设为私密" : "设为公开" }}</el-button>
         </div>
         
         <div class="comment">
@@ -99,7 +110,7 @@
   import VueMarkdownIt from 'vue-markdown-it';
   //import markdownItHighlight from 'markdown-it-highlightjs';
   import { api_getPostById, api_insert_like, api_delete_like, api_insert_favorite, api_delete_favorite, 
-    api_getCommentsById, api_add_comment, api_delete_comment, api_delete } from "@/api/blog"
+    api_getCommentsById, api_add_comment, api_delete_comment, api_delete, api_update } from "@/api/blog"
   export default {
     name: 'BlogPost',
     components:{
@@ -116,7 +127,7 @@
     mounted()
     {
         //console.log(this.postId)
-        this.getPost(this.postId);
+        this.getPost();
         this.getComment();
     },
     created() {
@@ -124,10 +135,10 @@
     },
     methods: {
   
-        getPost(postId)
+        getPost()
         {
             //this.post = null;
-            api_getPostById(postId)
+            api_getPostById(this.postId)
             .then((response)=>
             {
                 this.post = response.data.data.items;    
@@ -162,6 +173,62 @@
             });
         },
 
+        updatePost()
+        {
+          if(this.post.isPublic == true)
+          {
+            this.$confirm('确认将该博客设为私有显示?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'error',
+            center: true
+            }).then(() => {
+              
+                api_update(this.postId)
+                .then((response)=>
+                {
+                  if(response.data.code = 40000)
+                  {
+                    this.$message.success('成功设为私有!');
+                    this.getPost();
+                  }
+                });
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消'
+                });
+            });
+
+          }
+          else
+          {
+            this.$confirm('确认将该博客设为公有显示?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'error',
+            center: true
+            }).then(() => {
+              
+                api_update(this.postId)
+                .then((response)=>
+                {
+                  if(response.data.code = 40000)
+                  {
+                    this.$message.success('成功设为公有!');
+                    this.getPost();
+                  }
+                });
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消'
+                });
+            });
+          }
+          
+        },
+
         getComment()
         {
           api_getCommentsById(this.postId)
@@ -187,7 +254,7 @@
                   //this.post = response.data.data.items;    
                   //console.log(this.posts);
                   this.$message.info('取消点赞');
-                  this.getPost(this.postId);
+                  this.getPost();
               });
           }
           else
@@ -198,7 +265,7 @@
                 //this.post = response.data.data.items;    
                 //console.log(this.posts);
                 this.$message.success('点赞成功');
-                this.getPost(this.postId);
+                this.getPost();
             });
           }
             
@@ -214,7 +281,7 @@
                 //this.post = response.data.data.items;    
                 //console.log(this.posts);
                 this.$message.info('取消收藏');
-                this.getPost(this.postId);
+                this.getPost();
             });
 
           }
@@ -226,7 +293,7 @@
                 //this.post = response.data.data.items;    
                 //console.log(this.posts);
                 this.$message.success('收藏成功');
-                this.getPost(this.postId);
+                this.getPost();
             });
           }
         },
@@ -278,7 +345,7 @@
     watch: {
       '$route.params.id'(newId) {
         this.postId = newId;
-        this.getPost(this.postId);
+        this.getPost();
       },
     },
   };
@@ -333,6 +400,17 @@
 }
 
 .time-info el-icon {
+  margin-right: 5px;
+}
+
+.visibility-info {
+  display: flex;
+  align-items: center;
+  font-size: 1em;
+  color: #999;
+}
+
+.visibility-info el-icon {
   margin-right: 5px;
 }
 

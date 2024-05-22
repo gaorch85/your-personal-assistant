@@ -81,7 +81,6 @@ const routes = [
      ]
     },
 
-
     {
       path: '/',
       component: Layout,
