@@ -58,7 +58,7 @@ export default {
                 api_insert(this.form)
                   .then((response)=>
                   {
-                    if(response.data.code === 40000)
+                    if(response.data.code == 20000)
                     {
                       this.$message.success('创建成功!');
                       this.form = {

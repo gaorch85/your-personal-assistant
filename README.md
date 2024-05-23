@@ -53,6 +53,4 @@ npm run serve:production
 ### 学习参考资料：
 - [vue-admin-element](https://github.com/PanJiaChen/vue-admin-template)
 - [vue-pure-admin](https://github.com/pure-admin/vue-pure-admin)
-- [1天搞定SpringBoot+Vue全栈开发](https://www.bilibili.com/video/BV1nV4y1s7ZN/?spm_id_from=333.999.0.0&vd_source=df18e9914dc371a29432058a6d7d32fd)
-- [2小时搞定Docker 全程干货 基于CentOS7](https://www.bilibili.com/video/BV1vP4y1m76P/?spm_id_from=333.999.0.0&vd_source=df18e9914dc371a29432058a6d7d32fd)
 - [ChatGPT](https://chatgpt.com/)
