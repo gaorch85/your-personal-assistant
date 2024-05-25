@@ -8,6 +8,9 @@ import './mock'
 
 import './assets/iconfont/iconfont.css'; 
 
+import 'highlight.js/styles/default.css';
+
+
 Vue.prototype.$http = axios
 
 Vue.config.productionTip = false

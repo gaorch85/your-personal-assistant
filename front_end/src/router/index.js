@@ -119,7 +119,7 @@ const routes = [
               name: 'Blog-Create',
               component: CreateBlog,
               meta: { title: '创建博客', icon: 'el-icon-s-order' }
-            }
+            },
             
           ]
         }
