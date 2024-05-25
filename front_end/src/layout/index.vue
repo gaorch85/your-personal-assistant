@@ -16,7 +16,12 @@
 
                     <el-col :span="2" :offset="13"><div class="grid-content bg-purple">
                         <br>
-                        <el-button type="danger" round @click="logout()">logout</el-button>
+                        <div v-if="!isLogin">
+                            <el-button type="success" round @click="login()">login</el-button>
+                        </div>
+                        <div v-else>
+                            <el-button type="danger" round @click="logout()">logout</el-button>
+                        </div>
                     </div></el-col>
 
                 </el-row>
@@ -50,7 +55,7 @@
   </template>
   
   <script>
-    import { removeToken } from '@/utils/auth';
+    import { removeToken, getToken } from '@/utils/auth';
     import Sidebar from './Sidebar.vue';
     import Clock from './Clock.vue';
     import Tabs from './Tab.vue';
@@ -59,6 +64,14 @@
             Sidebar,
             Clock,
             Tabs
+        },
+        mounted() {
+            this.isLogin = !!getToken();
+        },
+        data() {
+            return {
+                isLogin: false
+            };
         },
         computed: {
             routes() {
@@ -103,7 +116,11 @@
             logout()
             {
                 removeToken();
-                this.$router.push('/login')
+                this.$router.push('/login');
+            },
+            login()
+            {
+                this.$router.push('/login');
             },
             handleBlogDeleted(postId) {
             this.$refs.tabs.handleBlogDeleted(postId);
