@@ -30,6 +30,8 @@ public class BlogService
     private BlogFavoriteService blogFavoriteService;
     @Autowired
     private BlogCommentService blogCommentService;
+    @Autowired
+    private BlogViewService blogViewService;
 
     @Autowired
     private HttpServletRequest request;
@@ -55,6 +57,7 @@ public class BlogService
             curBlog.setLikeSize(blogLikeService.getLikeSizeByBlogId(blogId));
             curBlog.setFavoriteSize(blogFavoriteService.getFavoriteSizeByBlogId(blogId));
             curBlog.setCommentSize(blogCommentService.getCommentSizeByBlogId(blogId));
+            curBlog.setViewSize(blogViewService.countViewsByBlogId(blogId));
             curBlog.setMyLike(blogLikeService.isMyLike(blogId, userId));
             curBlog.setMyFavorite(blogFavoriteService.isMyFavorite(blogId, userId));
             curBlog.setMyBlog(Objects.equals(username, curBlog.getUsername()));
@@ -159,6 +162,7 @@ public class BlogService
         Blog blog = blogMapper.selectById(blogId);
         blog.setLikeSize(blogLikeService.getLikeSizeByBlogId(blogId));
         blog.setFavoriteSize(blogFavoriteService.getFavoriteSizeByBlogId(blogId));
+        blog.setViewSize(blogViewService.countViewsByBlogId(blogId));
 
         String token = request.getHeader("X-token");
         String username = JwtUtils.getClaimsByToken(token).getSubject();
@@ -176,6 +180,8 @@ public class BlogService
             blog.setMyFavorite(true);
             blog.setMyFavoriteId(blogFavoriteService.getMyFavoriteId(blog.getId(), userId));
         }
+
+        blogViewService.insert(userId, blogId);
 
         if(blog.getUsername().equals(username))
             blog.setMyBlog(true);
@@ -199,6 +205,7 @@ public class BlogService
         blogLikeService.deleteLikesByBlogId(blogId);
         blogCommentService.deleteCommentsByBlogId(blogId);
         blogFavoriteService.deleteFavoritesByBlogId(blogId);
+        blogViewService.deleteByBlogId(blogId);
         return blogMapper.deleteById(blogId) > 0 ? Result.ok() : Result.error();
     }
 
@@ -225,6 +232,7 @@ public class BlogService
         blogLikeService.deleteAllByUserId(userId);
         blogFavoriteService.deleteAllByUserId(userId);
         blogCommentService.deleteAllByUserId(userId);
+        blogViewService.deleteByUserId(userId);
 
         return true;
     }

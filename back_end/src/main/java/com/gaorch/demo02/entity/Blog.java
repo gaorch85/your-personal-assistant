@@ -21,6 +21,8 @@ public class Blog {
     private Integer favoriteSize = 0;
     @TableField(exist = false)
     private Integer commentSize = 0;
+    @TableField(exist = false)
+    private Integer viewSize = 0;
 
     @TableField(exist = false)
     private Boolean myLike = false;
@@ -36,7 +38,7 @@ public class Blog {
     @JsonIgnore
     public int getRecommendIndex()
     {
-        return this.getLikeSize() + this.getFavoriteSize() + this.getCommentSize();
+        return this.getLikeSize() + this.getFavoriteSize() + this.getCommentSize() + this.getViewSize();
     }
 
 }

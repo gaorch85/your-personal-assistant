@@ -62,6 +62,16 @@ CREATE TABLE blog_favorite
     FOREIGN KEY (blog_id) REFERENCES blog (id)
 );
 
+CREATE TABLE blog_view
+(
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id    BIGINT NOT NULL,
+    blog_id    BIGINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (blog_id) REFERENCES blog (id)
+);
+
 CREATE TABLE course
 (
     id      BIGINT AUTO_INCREMENT PRIMARY KEY,

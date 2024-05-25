@@ -18,6 +18,10 @@
               <i class="el-icon-time"></i>
               <span class="publish-date">{{ post.time }}</span>
             </div>
+            <div class="view-info">
+              <i class="el-icon-view"></i>
+              <span class="publish-date">{{ post.viewSize }}</span>
+            </div>
             <div class="visibility-info">
               <div v-if="post.isPublic">
                 <span class="publish-date">public</span>
@@ -402,6 +406,18 @@
 .time-info el-icon {
   margin-right: 5px;
 }
+
+.view-info {
+  display: flex;
+  align-items: center;
+  font-size: 1em;
+  color: #999;
+}
+
+.view-info el-icon {
+  margin-right: 5px;
+}
+
 
 .visibility-info {
   display: flex;

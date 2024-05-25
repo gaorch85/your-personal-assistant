@@ -29,6 +29,10 @@
                   <div v-if="!post.isPublic" style="font-size: 24px;">
                     <i class='el-icon-lock'></i>
                   </div>
+                  <div class="view">
+                    <i class='el-icon-view'></i>
+                    <span>{{ post.viewSize }}</span>
+                  </div>
                   <div class="like">
                     <i :class="{'iconfont icon-zan': post.myLike, 'iconfont icon-zan1': !post.myLike}"></i>
                     <span>{{ post.likeSize }}</span>
@@ -172,12 +176,12 @@
   gap: 10px;
 }
 
-.like, .favorite, .comments {
+.view .like, .favorite, .comments {
   display: flex;
   align-items: center;
 }
 
-.like i, .favorite i, .comments i {
+.view i, .like i, .favorite i, .comments i {
   font-size: 24px;
   margin-right: 5px;
 }
@@ -211,6 +215,6 @@
 }
 
 span {
-  font-size: 14px;
+  font-size: 16px;
 }
 </style>
