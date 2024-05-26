@@ -7,6 +7,7 @@
   import katex from 'markdown-it-katex';
   import hljs from 'highlight.js'
   import 'highlight.js/styles/default.css';
+  import 'katex/dist/katex.min.css';
 
   export default {
     props: {
@@ -37,9 +38,7 @@
   </script>
   
   <style>
-  /* 在这里添加KaTeX的CSS样式 */
-  @import 'katex/dist/katex.min.css';
-
+  
   /* Markdown 渲染容器 */
 .markdown-container {
   max-width: 900px; /* 最大宽度 */

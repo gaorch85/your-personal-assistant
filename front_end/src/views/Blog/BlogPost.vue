@@ -141,12 +141,13 @@
   
         getPost()
         {
-            //this.post = null;
             api_getPostById(this.postId)
             .then((response)=>
             {
+                if(response.data.code == 20001)
+                  if(this.$route.name != '404')
+                    this.$router.push('/404');
                 this.post = response.data.data.items;    
-            //console.log(this.posts);
             });
         },
 

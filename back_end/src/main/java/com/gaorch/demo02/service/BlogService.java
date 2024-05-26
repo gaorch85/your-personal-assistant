@@ -42,7 +42,7 @@ public class BlogService
         return blogMapper.selectBasicBlogs();
     }
 
-    public  List<Blog> addOtherDataSize(List<Blog> blog)
+    public List<Blog> addOtherDataSize(List<Blog> blogs)
     {
 
         String token = request.getHeader("X-token");
@@ -51,7 +51,7 @@ public class BlogService
         Integer userId = user.getId();
 
 
-        for(Blog curBlog: blog)
+        for(Blog curBlog: blogs)
         {
             Integer blogId = curBlog.getId();
             curBlog.setLikeSize(blogLikeService.getLikeSizeByBlogId(blogId));
@@ -62,22 +62,20 @@ public class BlogService
             curBlog.setMyFavorite(blogFavoriteService.isMyFavorite(blogId, userId));
             curBlog.setMyBlog(Objects.equals(username, curBlog.getUsername()));
         }
-        return blog;
+        return blogs;
     }
 
+    public List<Blog> filterDisplayable(List<Blog> blogs)
+    {
+        blogs.removeIf(curBlog -> !curBlog.getIsPublic() && !curBlog.getMyBlog());
+        return blogs;
+    }
 
     public List<Blog> getRecommendBlogs()
     {
 
-        List<Blog> list = addOtherDataSize(listAll());
-        Iterator<Blog> iterator = list.iterator();
-        while (iterator.hasNext()) {
-            Blog curBlog = iterator.next();
-            if (!curBlog.getIsPublic() && !curBlog.getMyBlog())
-            {
-                iterator.remove();
-            }
-        }
+        List<Blog> list = filterDisplayable(addOtherDataSize(listAll()));
+
         list.sort(new Comparator<Blog>() {
             @Override
             public int compare(Blog blog1, Blog blog2) {
@@ -97,7 +95,7 @@ public class BlogService
     public Result listLatestAll()
     {
         System.out.println("按时间排序");
-        List<Blog> list = addOtherDataSize(listAll());
+        List<Blog> list = filterDisplayable(addOtherDataSize(listAll()));
         list.sort(new Comparator<Blog>() {
             @Override
             public int compare(Blog blog1, Blog blog2) {
@@ -112,62 +110,40 @@ public class BlogService
 
     public Result listMyBlogAll()
     {
-        System.out.println("按我的显示");
-        String token = request.getHeader("X-token");
-        String username = JwtUtils.getClaimsByToken(token).getSubject();
 
         List<Blog> list = this.getRecommendBlogs();
-        //System.out.println(list);
-        Iterator<Blog> iterator = list.iterator();
-        while (iterator.hasNext()) {
-            Blog curBlog = iterator.next();
-            if (!curBlog.getMyBlog()) {
-                System.out.println("不符合条件，移除");
-                iterator.remove();
-            }
-        }
-        System.out.println(list);
+        list.removeIf(curBlog -> !curBlog.getMyBlog());
         return Result.ok().data("items", list);
     }
 
     public Result listMyLikeAll()
     {
         List<Blog> list = this.getRecommendBlogs();
-        Iterator<Blog> iterator = list.iterator();
-        while (iterator.hasNext()) {
-            Blog curBlog = iterator.next();
-            if(!curBlog.getMyLike())
-                iterator.remove();
-        }
-        System.out.println(list);
+        list.removeIf(curBlog -> !curBlog.getMyLike());
         return Result.ok().data("items", list);
     }
 
     public Result listMyFavoriteAll()
     {
         List<Blog> list = this.getRecommendBlogs();
-
-        Iterator<Blog> iterator = list.iterator();
-        while (iterator.hasNext()) {
-            Blog curBlog = iterator.next();
-            if(!curBlog.getMyFavorite())
-                iterator.remove();
-        }
-        System.out.println(list);
+        list.removeIf(curBlog -> !curBlog.getMyFavorite());
         return Result.ok().data("items", list);
     }
 
     public Result getPostById(Integer blogId)
     {
-        Blog blog = blogMapper.selectById(blogId);
-        blog.setLikeSize(blogLikeService.getLikeSizeByBlogId(blogId));
-        blog.setFavoriteSize(blogFavoriteService.getFavoriteSizeByBlogId(blogId));
-        blog.setViewSize(blogViewService.countViewsByBlogId(blogId));
-
         String token = request.getHeader("X-token");
         String username = JwtUtils.getClaimsByToken(token).getSubject();
         User user = userMapper.selectByUsername(username);
         Integer userId = user.getId();
+
+        Blog blog = blogMapper.selectById(blogId);
+        if (blog == null || (!blog.getIsPublic() && !blog.getUsername().equals(username)))
+            return Result.error();
+
+        blog.setLikeSize(blogLikeService.getLikeSizeByBlogId(blogId));
+        blog.setFavoriteSize(blogFavoriteService.getFavoriteSizeByBlogId(blogId));
+        blog.setViewSize(blogViewService.countViewsByBlogId(blogId));
 
         if(blogLikeService.isMyLike(blog.getId(), userId))
         {
