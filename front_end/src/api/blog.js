@@ -26,11 +26,20 @@ export function api_delete(postId)
     })
 }
 
-export function api_update(postId) 
+export function api_update_status(postId) 
+{
+    return request({
+      url: `/blog/update_status/${postId}`,
+      method: 'put'
+    })
+}
+
+export function api_update(postId, data) 
 {
     return request({
       url: `/blog/${postId}`,
-      method: 'put'
+      method: 'put',
+      data: data
     })
 }
 

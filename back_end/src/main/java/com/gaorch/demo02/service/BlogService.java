@@ -185,11 +185,21 @@ public class BlogService
         return blogMapper.deleteById(blogId) > 0 ? Result.ok() : Result.error();
     }
 
-    public Result changeBlogById(Integer blogId)
+    public Result updateBlogStatusByBlogId(Integer blogId)
     {
         Blog blog = blogMapper.selectById(blogId);
         blog.setIsPublic(!blog.getIsPublic());
         int i = blogMapper.updateById(blog);
+        return i > 0 ? Result.ok() : Result.error();
+    }
+
+    public Result updateBlogByBlogId(Integer blogId, Blog blog)
+    {
+        Blog originalBlog = blogMapper.selectById(blogId);
+        originalBlog.setContent(blog.getContent());
+        originalBlog.setTitle(blog.getTitle());
+        originalBlog.setIsPublic(blog.getIsPublic());
+        int i = blogMapper.updateById(originalBlog);
         return i > 0 ? Result.ok() : Result.error();
     }
 

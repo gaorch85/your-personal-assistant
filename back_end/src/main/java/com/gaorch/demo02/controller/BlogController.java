@@ -59,10 +59,17 @@ public class BlogController {
         return result.isSuccess() ? Response.ok() : Response.error();
     }
 
-    @PutMapping("/blog/{postId}")
-    public Response changeBlogById(@PathVariable Integer postId)
+    @PutMapping("/blog/update_status/{postId}")
+    public Response updateBlogStatusByBlogId(@PathVariable Integer postId)
     {
-        Result result = blogService.changeBlogById(postId);
+        Result result = blogService.updateBlogStatusByBlogId(postId);
+        return result.isSuccess() ? Response.ok() : Response.error();
+    }
+
+    @PutMapping("/blog/{postId}")
+    public Response updateBlogById(@PathVariable Integer postId, @RequestBody Blog blog)
+    {
+        Result result = blogService.updateBlogByBlogId(postId, blog);
         return result.isSuccess() ? Response.ok() : Response.error();
     }
 

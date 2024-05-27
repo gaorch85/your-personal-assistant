@@ -61,6 +61,7 @@
 
         <div v-if="post.myBlog" class="Post-delete">
           <el-button type="danger" icon="el-icon-delete" @click="deletePost()">删除博客</el-button>
+          <el-button type="primary" icon="el-icon-edit" @click="editPost()">编辑博客</el-button>
           <el-button type="success" @click="updatePost()">{{ post.isPublic ? "设为私密" : "设为公开" }}</el-button>
         </div>
         
@@ -113,7 +114,7 @@
   <script>
   import MarkdownContainer from "./MarkdownContainer.vue";
   import { api_getPostById, api_insert_like, api_delete_like, api_insert_favorite, api_delete_favorite, 
-    api_getCommentsById, api_add_comment, api_delete_comment, api_delete, api_update } from "@/api/blog"
+    api_getCommentsById, api_add_comment, api_delete_comment, api_delete, api_update_status } from "@/api/blog"
   export default {
     name: 'BlogPost',
     components:{
@@ -178,6 +179,11 @@
             });
         },
 
+        editPost()
+        {
+          this.$router.push({ name: "EditBlog"});
+        },
+
         updatePost()
         {
           if(this.post.isPublic == true)
@@ -189,7 +195,7 @@
             center: true
             }).then(() => {
               
-                api_update(this.postId)
+              api_update_status(this.postId)
                 .then((response)=>
                 {
                   if(response.data.code = 40000)
@@ -215,7 +221,7 @@
             center: true
             }).then(() => {
               
-                api_update(this.postId)
+              api_update_status(this.postId)
                 .then((response)=>
                 {
                   if(response.data.code = 40000)
@@ -245,7 +251,7 @@
 
         goBack()
         {
-          console.log("返回");
+          //console.log("返回");
           this.$router.push({ name: "Blog-List"});
         },
 

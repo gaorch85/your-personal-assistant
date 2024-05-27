@@ -10,6 +10,7 @@ import Blog from "@/views/Blog/Blog.vue"
 import BlogPost from '@/views/Blog/BlogPost.vue'
 import BlogList from "@/views/Blog/BlogList.vue"
 import CreateBlog from "@/views/Blog/CreateBlog.vue"
+import EditBlog from '@/views/Blog/EditBlog.vue'
 import Schedule from "@/views/Schedule/Schedule.vue"
 import Curriculum from '@/views/Schedule/Curriculum.vue'
 import AddCourse from '@/views/Schedule/AddCourse.vue'
@@ -63,6 +64,19 @@ const routes = [
           name: 'BlogPost',
           component: BlogPost,
           meta: { title: '默认标题'}
+        }
+      ]
+    },
+
+    {
+      path: '/',
+      component: Layout,
+      children: [
+        {
+          path: 'blog/edit/:id',  // 使用占位符 :id
+          name: 'EditBlog',
+          component: EditBlog,
+          meta: { title: '编辑'}
         }
       ]
     },
