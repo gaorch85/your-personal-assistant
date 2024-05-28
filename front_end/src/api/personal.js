@@ -29,6 +29,14 @@ export function api_changePassword(data) {
     data
   })
 }
+
+export function api_changeUsername(data) {
+  return request({
+    url: `/changeUsername`,
+    method: 'put',
+    data
+  })
+}
     
 
 

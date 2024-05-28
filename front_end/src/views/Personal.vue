@@ -38,6 +38,7 @@
             </el-descriptions-item>
 
             <template slot="extra">
+                <el-button type="primary" size="small" @click="changeUsername()">修改用户名</el-button>
                 <el-button type="primary" size="small" @click="changePassword()">修改密码</el-button>
             </template>
         </el-descriptions>
@@ -62,7 +63,7 @@
 
 <script>
 
-  import { api_changePassword, api_deactivateAccount, api_getInfo, api_update } from '@/api/personal';
+  import { api_changePassword, api_changeUsername, api_deactivateAccount, api_getInfo, api_update } from '@/api/personal';
   import { removeToken } from "@/utils/auth"
 
     export default {
@@ -106,23 +107,64 @@
             })
         },
 
+        changeUsername()
+        {
+            this.$prompt('请输入用户名', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            inputPattern: /.{3,}/,
+            inputErrorMessage: '用户名不能少于3位'
+            }).then(({ value }) => {
+                const newInfo = { ...this.info };
+                newInfo.username = value; 
+                api_changeUsername(newInfo)
+                .then((response)=>
+                {
+                    if(response.data.code == 20000)
+                    {
+                        this.$message({
+                            type: 'success',
+                            message: '修改成功！'
+                        });
+                        if(this.$router.currentRoute.name != 'login')
+                            this.$router.push('/login')
+                    }
+                    else
+                    {
+                        this.$message({
+                            type: 'error',
+                            message: '用户名已存在！'
+                        });
+                    }
+                   
+                })
+                
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '取消修改'
+                });       
+            });
+        },
+
         changePassword()
         {
             this.$prompt('请输入密码', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             inputPattern: /.{6,}/,
-            inputErrorMessage: '密码格式不正确'
+            inputErrorMessage: '密码不能少于6位'
             }).then(({ value }) => {
                 api_changePassword({password: value})
                 .then((response)=>
                 {
-                    this.getInfo();
-                })
-                this.$message({
+                    this.$message({
                     type: 'success',
                     message: '修改成功！'
-                });
+                    });
+                    if(this.$router.currentRoute.name != 'login')
+                        this.$router.push('/login')
+                })
             }).catch(() => {
                 this.$message({
                     type: 'info',

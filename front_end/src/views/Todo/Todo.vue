@@ -253,10 +253,10 @@ import { api_delete, api_getAll, api_insert, api_update } from '@/api/todo';
       update(row)
       {
           const newRow = { ...row }; // 创建一个新对象，拷贝原始数据, 避免直接修改原始数据
-          if(row.status == false)
+          if(newRow.status == false)
           {
-              row.status = true;
-              api_update(row)
+            newRow.status = true;
+              api_update(newRow)
               .then((response)=>
               {
                   if(response.data.code == "20000")
