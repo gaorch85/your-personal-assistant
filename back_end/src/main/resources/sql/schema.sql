@@ -23,12 +23,12 @@ CREATE TABLE todo
 CREATE TABLE blog
 (
     id        BIGINT AUTO_INCREMENT PRIMARY KEY,
-    username  VARCHAR(255) NOT NULL,
+    user_id  BIGINT       NOT NULL,
     time      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     title     VARCHAR(255) NOT NULL,
-    content   text         NOT NULL,
+    content   TEXT         NOT NULL,
     is_public BOOLEAN               DEFAULT 0,
-    FOREIGN KEY (username) REFERENCES user (username)
+    FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
 CREATE TABLE blog_comment

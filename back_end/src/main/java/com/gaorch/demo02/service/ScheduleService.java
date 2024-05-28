@@ -61,6 +61,11 @@ public class ScheduleService {
         return Result.ok();
     }
 
+    public Boolean deleteByUserId(Integer userId)
+    {
+        return scheduleMapper.deleteByUserId(userId);
+    }
+
 
 
 

@@ -16,11 +16,11 @@ public class JwtUtils {
 
     private static UserMapper userMapper = null;
 
-    // 1小时过期
-    private static long expire = 3600;
+    // 12小时过期
+    private static final long expire = 3600 * 12;
 
     // 32位密钥
-    private static String secret = "ijdowudiehhudisodkpbdmckdisurnco";
+    private static final String secret = "ijdowudiehhudisodkpbdmckdisurnco";
 
 
     @Autowired

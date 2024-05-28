@@ -9,12 +9,14 @@ import java.util.List;
 @Data
 public class Blog {
     private Integer id;
-    private String username;
+    private Integer userId;
     private String time;
     private String title;
     private String content;
     private Boolean isPublic;
 
+    @TableField(exist = false)
+    private String username;
     @TableField(exist = false)
     private Integer likeSize = 0;
     @TableField(exist = false)

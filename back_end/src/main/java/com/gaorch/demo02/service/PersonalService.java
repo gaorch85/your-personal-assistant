@@ -1,6 +1,7 @@
 package com.gaorch.demo02.service;
 
 import com.gaorch.demo02.entity.User;
+import com.gaorch.demo02.mapper.CourseMapper;
 import com.gaorch.demo02.mapper.UserMapper;
 import com.gaorch.demo02.utils.JwtUtils;
 import com.gaorch.demo02.utils.PasswordUtils;
@@ -17,9 +18,12 @@ public class PersonalService
 
     @Autowired
     private BlogService blogService;
-
     @Autowired
     private TodoService todoService;
+    @Autowired
+    private CourseService courseService;
+    @Autowired
+    private ScheduleService scheduleService;
 
     @Autowired
     private HttpServletRequest request;     //用于解析请求头中的token
@@ -37,17 +41,28 @@ public class PersonalService
 
     public Result changePassword(User user)
     {
+        String token = request.getHeader("X-token");
+        String username = JwtUtils.getClaimsByToken(token).getSubject();
         String password = user.getPassword();
-        User selectUser = userMapper.selectByUsername(user.getUsername());
+        User selectUser = userMapper.selectByUsername(username);
         if (selectUser != null)
         {
             selectUser.setSalt(PasswordUtils.generateSalt());
             selectUser.setPassword(PasswordUtils.hashPassword(password, selectUser.getSalt()));
-            int i = userMapper.updateById(user);
+            int i = userMapper.updateById(selectUser);
             if(i>0)
                 return Result.ok();
         }
         return Result.error();
+    }
+
+    public Result updateUsername(User user)
+    {
+        System.out.println(user);
+        if(userMapper.selectByUsername(user.getUsername()) != null)
+            return Result.error();
+        int i = userMapper.updateById(user);
+        return i > 0 ? Result.ok() : Result.error();
     }
 
     public Result update(User user)
@@ -63,8 +78,10 @@ public class PersonalService
         User user = userMapper.selectByUsername(username);
         Integer userId = user.getId();
 
-        blogService.deleteAllByUsername(username);
+        blogService.deleteAllByUserId(userId);
         todoService.deleteAllByUserId(userId);
+        scheduleService.deleteByUserId(userId);
+        courseService.deleteByUserId(userId);
 
         return userMapper.deleteById(userId) > 0 ?
                 Result.ok() : Result.error();

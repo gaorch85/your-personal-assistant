@@ -26,6 +26,12 @@ public class PersonalController {
         return result.isSuccess() ? Response.ok() : Response.error();
     }
 
+    @PutMapping("/changeUsername")
+    public Response changeUsername(@RequestBody User user) {
+        Result result = personalService.updateUsername(user);
+        return result.isSuccess() ? Response.ok() : Response.error();
+    }
+
     @PutMapping("/user/update")
     public Response update(@RequestBody User user) {
         Result result = personalService.update(user);

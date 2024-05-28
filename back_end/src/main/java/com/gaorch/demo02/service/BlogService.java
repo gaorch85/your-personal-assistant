@@ -54,13 +54,14 @@ public class BlogService
         for(Blog curBlog: blogs)
         {
             Integer blogId = curBlog.getId();
+            curBlog.setUsername(this.getUsernameByUserId(curBlog.getUserId()));
             curBlog.setLikeSize(blogLikeService.getLikeSizeByBlogId(blogId));
             curBlog.setFavoriteSize(blogFavoriteService.getFavoriteSizeByBlogId(blogId));
             curBlog.setCommentSize(blogCommentService.getCommentSizeByBlogId(blogId));
             curBlog.setViewSize(blogViewService.countViewsByBlogId(blogId));
             curBlog.setMyLike(blogLikeService.isMyLike(blogId, userId));
             curBlog.setMyFavorite(blogFavoriteService.isMyFavorite(blogId, userId));
-            curBlog.setMyBlog(Objects.equals(username, curBlog.getUsername()));
+            curBlog.setMyBlog(Objects.equals(userId, curBlog.getUserId()));
         }
         return blogs;
     }
@@ -138,9 +139,10 @@ public class BlogService
         Integer userId = user.getId();
 
         Blog blog = blogMapper.selectById(blogId);
-        if (blog == null || (!blog.getIsPublic() && !blog.getUsername().equals(username)))
+        if (blog == null || (!blog.getIsPublic() && !blog.getUserId().equals(userId)))
             return Result.error();
 
+        blog.setUsername(this.getUsernameByUserId(blog.getUserId()));
         blog.setLikeSize(blogLikeService.getLikeSizeByBlogId(blogId));
         blog.setFavoriteSize(blogFavoriteService.getFavoriteSizeByBlogId(blogId));
         blog.setViewSize(blogViewService.countViewsByBlogId(blogId));
@@ -170,7 +172,9 @@ public class BlogService
     {
         String token = request.getHeader("X-token");
         String username = JwtUtils.getClaimsByToken(token).getSubject();
-        blog.setUsername(username);
+        Integer userId = this.getUserIdByUsername(username);
+
+        blog.setUserId(userId);
         blog.setId(0);
         int i = blogMapper.insert(blog);
         return i > 0 ? Result.ok() : Result.error();
@@ -204,23 +208,29 @@ public class BlogService
     }
 
 
-    public Boolean deleteAllByUsername(String username)
+    public Boolean deleteAllByUserId(Integer userId)
     {
-        List<Blog> blogs = blogMapper.selectByUsername(username);
-        Iterator<Blog> iterator = blogs.iterator();
-        while (iterator.hasNext()) {
-            Blog curBlog = iterator.next();
+        List<Blog> blogs = blogMapper.selectByUserId(userId);
+        for (Blog curBlog : blogs) {
             this.delete(curBlog.getId());
         }
 
-        User user = userMapper.selectByUsername(username);
-        Integer userId = user.getId();
         blogLikeService.deleteAllByUserId(userId);
         blogFavoriteService.deleteAllByUserId(userId);
         blogCommentService.deleteAllByUserId(userId);
         blogViewService.deleteByUserId(userId);
 
         return true;
+    }
+
+    public Integer getUserIdByUsername(String username)
+    {
+        return userMapper.getIdByUsername(username);
+    }
+
+    public String getUsernameByUserId(Integer userId)
+    {
+        return userMapper.getUsernameById(userId);
     }
 
 }
