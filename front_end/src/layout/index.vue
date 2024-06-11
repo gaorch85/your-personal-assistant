@@ -133,11 +133,11 @@
   
   <style>
 
-    /* 覆盖 el-main 默认 padding */
+
     .custom-main {
     padding: 0 !important;
     }   
-    /* 调整分割线的高度 */
+
     .el-divider--horizontal{
         margin: 0px;
 

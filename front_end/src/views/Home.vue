@@ -75,7 +75,7 @@ export default {
 }
 
 .hero {
-  background: url('https://source.unsplash.com/random/1920x1080') no-repeat center center;
+  background: url('@/assets/home-background.jpg') no-repeat center center;
   background-size: cover;
   color: white;
   padding: 100px 20px;

@@ -188,7 +188,7 @@ const routes = [
   ]
   
   const router = new Router({
-    mode: 'history', // 使用 HTML5 history 模式，不会在 URL 中出现 #
+    mode: 'history',
     routes
   })
 

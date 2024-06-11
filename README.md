@@ -69,4 +69,3 @@ git pull
 ### 学习参考资料：
 - [vue-admin-element](https://github.com/PanJiaChen/vue-admin-template)
 - [vue-pure-admin](https://github.com/pure-admin/vue-pure-admin)
-- [ChatGPT](https://chatgpt.com/)

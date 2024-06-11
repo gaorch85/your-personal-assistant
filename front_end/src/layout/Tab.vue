@@ -43,7 +43,7 @@
           this.tabs.push({
             label: route.meta.title || `${route.name} ${route.params.id}`,
             name: tabName,
-            closable: route.name !== 'Home', // Home tab is not closable
+            closable: route.name !== 'Home', 
             route: {
               name: route.name,
               params: route.params,

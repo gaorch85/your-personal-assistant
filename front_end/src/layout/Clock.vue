@@ -13,8 +13,8 @@
       };
     },
     mounted() {
-      this.updateDateTime(); // 初始化日期和时间
-      setInterval(this.updateDateTime, 1000); // 每秒更新日期和时间
+      this.updateDateTime(); 
+      setInterval(this.updateDateTime, 1000);
     },
     methods: {
       updateDateTime() {
