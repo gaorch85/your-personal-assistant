@@ -5,6 +5,7 @@ import com.gaorch.demo02.mapper.BlogCommentMapper;
 import com.gaorch.demo02.entity.BlogComment;
 import com.gaorch.demo02.mapper.UserMapper;
 import com.gaorch.demo02.utils.JwtUtils;
+import com.gaorch.demo02.utils.IpParseUtil;
 import com.gaorch.demo02.utils.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,9 @@ public class BlogCommentService {
 
     public Result insert(Integer postId, String comment)
     {
+        String ipAddress = request.getRemoteAddr();
+
+
         String token = request.getHeader("X-token");
         String username = JwtUtils.getClaimsByToken(token).getSubject();
         User user = userMapper.selectByUsername(username);
@@ -69,6 +73,16 @@ public class BlogCommentService {
         blogComment.setBlogId(postId);
         blogComment.setId(0);
         blogComment.setContent(comment);
+
+        String r = "";
+        int[] index = {0, 3};
+        List<String> parse = IpParseUtil.parse(ipAddress, index);
+        for (String element : parse) {
+            r = r.concat(element).concat(" ");
+        }
+        blogComment.setRegion(r);
+
+
         int i = blogCommentMapper.insert(blogComment);
         return i > 0 ? Result.ok() : Result.error();
     }

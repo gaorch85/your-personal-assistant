@@ -13,6 +13,7 @@ public class BlogComment {
     private String createdAt;
     @TableField(exist = false)
     private String username;
+    private String region;
     @TableField(exist = false)
     private Boolean myComment;
 

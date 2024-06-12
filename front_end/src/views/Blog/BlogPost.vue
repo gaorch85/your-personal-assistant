@@ -91,7 +91,7 @@
                     {{comment.username}}
                 </div>
                 <div class="cmt-time">
-                    {{comment.createdAt}}
+                  {{comment.region}} | {{comment.createdAt}}
                 </div>
               </div>
                 <div class="cmt-value">

@@ -37,6 +37,7 @@ CREATE TABLE blog_comment
     blog_id    BIGINT NOT NULL,
     user_id    BIGINT NOT NULL,
     content    TEXT   NOT NULL,
+    region    varchar(255)   NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (blog_id) REFERENCES blog (id),
     FOREIGN KEY (user_id) REFERENCES user (id)
