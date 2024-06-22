@@ -15,6 +15,7 @@ import Schedule from "@/views/Schedule/Schedule.vue"
 import Curriculum from '@/views/Schedule/Curriculum.vue'
 import AddCourse from '@/views/Schedule/AddCourse.vue'
 import Layout from "@/layout"
+import AI from '@/views/AI/AI.vue'
 
 Vue.use(Router)
 
@@ -169,6 +170,20 @@ const routes = [
           ]
         }
      ]
+    },
+
+    {
+      path: '/',
+      component: Layout,
+      show: true,
+      children: [
+        {
+          path: '/ai',
+          name: 'AI',
+          component: AI,
+          meta: { title: '人工智能', icon: 'el-icon-s-custom' }
+        }
+      ]
     },
 
     {
