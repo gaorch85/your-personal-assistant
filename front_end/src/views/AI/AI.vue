@@ -12,6 +12,11 @@
         </el-input>
       </div>
       <el-button type="primary" @click="getPrediction" :loading="loading">获取回答</el-button>
+      <el-select v-model="language" placeholder="回答语言"  style="margin-left: 20px;">
+        <el-option label="任意" value="anything"></el-option>
+        <el-option label="中文" value="Chinese"></el-option>
+        <el-option label="英文" value="English"></el-option>
+      </el-select>
       <div v-if="prediction" style="margin-top: 20px;">
         <div class="markdown-container">
           <MarkdownContainer :markdownContent="prediction"></MarkdownContainer>
@@ -32,17 +37,21 @@
       return {
         inputString: '',
         prediction: '',
-        loading: false
+        loading: false,
+        language: 'anything'
       };
     },
     methods: {
       async getPrediction() {
         if (!this.inputString) {
-            this.$message.error('Please enter a string');
+            this.$message.error('请输入你的问题！');
             return;
         }
         this.loading = true;
-        api_predict({string: this.inputString})
+        var helpPrompt = "";
+        helpPrompt = (this.language === "Chinese") ? "请用中文回答，这非常重要！" : helpPrompt;
+        helpPrompt = (this.language === "English") ? "Please answer in English, but you don't need to repeat this request in your reply, which is more than important for me!" : helpPrompt;
+        api_predict({string: this.inputString + helpPrompt})
           .then((response)=>{
             if(response.data.code == 20000)
             {
