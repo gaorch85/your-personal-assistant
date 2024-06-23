@@ -8,7 +8,8 @@
           v-model="inputString"
           placeholder="请输入你的问题..."
           clearable
-          @keyup.enter.native="getPrediction">
+          type="textarea"
+          :autosize="{ minRows: 2 }">
         </el-input>
       </div>
       <el-button type="primary" @click="getPrediction" :loading="loading">获取回答</el-button>
@@ -49,8 +50,8 @@
         }
         this.loading = true;
         var helpPrompt = "";
-        helpPrompt = (this.language === "Chinese") ? "请用中文回答，这非常重要！" : helpPrompt;
-        helpPrompt = (this.language === "English") ? "Please answer in English, but you don't need to repeat this request in your reply, which is more than important for me!" : helpPrompt;
+        helpPrompt = (this.language === "Chinese") ? ",请用中文回答，这非常重要！" : helpPrompt;
+        helpPrompt = (this.language === "English") ? ",Please answer in English, but you don't need to repeat this request in your reply, which is more than important for me!" : helpPrompt;
         api_predict({string: this.inputString + helpPrompt})
           .then((response)=>{
             if(response.data.code == 20000)
@@ -64,7 +65,7 @@
           })
           .finally(()=>{
             this.loading = false;
-          })
+          });
       }
     }
   };
