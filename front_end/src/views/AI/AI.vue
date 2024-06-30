@@ -12,12 +12,17 @@
           :autosize="{ minRows: 2 }">
         </el-input>
       </div>
-      <el-button type="primary" @click="getPrediction" :loading="loading">获取回答</el-button>
-      <el-select v-model="language" placeholder="回答语言"  style="margin-left: 20px;">
-        <el-option label="任意" value="anything"></el-option>
-        <el-option label="中文" value="Chinese"></el-option>
-        <el-option label="英文" value="English"></el-option>
-      </el-select>
+      <div class="help">
+        <el-button type="primary" @click="getPrediction" :loading="loading">获取回答</el-button>
+        <el-select v-model="language" placeholder="回答语言" style="margin-left: 20px;">
+          <el-option label="任意" value="anything"></el-option>
+          <el-option label="中文" value="Chinese"></el-option>
+          <el-option label="英文" value="English"></el-option>
+        </el-select>
+        <div class="times">
+          剩余次数：{{ this.times }}
+        </div>
+      </div>
       <div v-if="prediction" style="margin-top: 20px;">
         <div class="markdown-container">
           <MarkdownContainer :markdownContent="prediction"></MarkdownContainer>
@@ -28,22 +33,31 @@
   
   <script>
     import MarkdownContainer from "../Blog/MarkdownContainer.vue";
-  import { api_predict } from "@/api/ai";
+  import { api_predict, api_getTimes } from "@/api/ai";
 
   export default {
     components:{
       MarkdownContainer
+    },
+    mounted()
+    {
+        this.getTimes();
     },
     data() {
       return {
         inputString: '',
         prediction: '',
         loading: false,
-        language: 'anything'
+        language: 'anything',
+        times: 0,
       };
     },
     methods: {
       async getPrediction() {
+        if(this.times <= 0) {
+          this.$message.error('您的次数已用完，请联系管理员！');
+          return;
+        }
         if (!this.inputString) {
             this.$message.error('请输入你的问题！');
             return;
@@ -61,10 +75,20 @@
                 type: 'success'
               });
               this.prediction = response.data.data.items;
+              this.getTimes();
             }
           })
           .finally(()=>{
             this.loading = false;
+          });
+      },
+
+      getTimes()
+      {
+        api_getTimes()
+          .then((response)=>
+          {
+            this.times = response.data.data.items;    
           });
       }
     }
@@ -76,6 +100,20 @@
   max-width: 900px;
   margin: 0 auto;
   font-family: Arial, sans-serif;
+}
+
+.help {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.el-select {
+  margin-left: 20px;
+}
+
+.times {
+  margin-left: auto;
 }
 
 

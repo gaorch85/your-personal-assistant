@@ -6,7 +6,8 @@ CREATE TABLE user
     salt      VARCHAR(255)        NOT NULL,
     phone_num VARCHAR(20),
     email     VARCHAR(255),
-    is_vip    BOOLEAN DEFAULT 0
+    is_vip    BOOLEAN DEFAULT 0,
+    ai_times  INT  DEFAULT 3,
 );
 
 CREATE TABLE todo

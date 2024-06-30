@@ -11,4 +11,5 @@ public class User {
     private String phoneNum;
     private String email;
     private boolean isVip;
+    private Integer aiTimes;
 }
